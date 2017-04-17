@@ -20,6 +20,7 @@ export class Configure {
         if (err) {
           console.log(err);
           alertService.error(JSON.stringify(err.message));
+          connection.destroy();
           reject(err);
         } else {
           resolve(connection);
