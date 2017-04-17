@@ -1,0 +1,172 @@
+<h3>
+  ทะเบียนฝากครรภ์</h3>
+<button class="btn btn-sm btn-success">ส่งออกกลุ่มเป้าหมาย (ตัวชี้วัด)</button>
+<clr-datagrid [clrLoading]="loading">
+  <clr-dg-column [clrDgField]="'patient_hn'">HN</clr-dg-column>
+  <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
+  <clr-dg-column>อายุ (ปี)</clr-dg-column>
+  <clr-dg-column>LMP</clr-dg-column>
+  <clr-dg-column>EDC</clr-dg-column>
+  <clr-dg-column>ครรภ์ที่</clr-dg-column>
+  <clr-dg-column>วันที่คลอด</clr-dg-column>
+  <clr-dg-column>วันที่ส่งออก</clr-dg-column>
+
+  <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+  <clr-dg-row *clrDgItems="let anc of ancs">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="showAncHistory(anc)">ประวัติฝากครรภ์</button>
+      <button class="action-item" (click)="showPostHistory(anc)">ประวัติดูแลหลังคลอด</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{anc.patient_hn}}</clr-dg-cell>
+    <clr-dg-cell>{{anc.ptname}}</clr-dg-cell>
+    <clr-dg-cell>{{anc.age}}</clr-dg-cell>
+    <clr-dg-cell>{{anc.lmp | toThaiDate }}</clr-dg-cell>
+    <clr-dg-cell>{{anc.edc | toThaiDate }}</clr-dg-cell>
+    <clr-dg-cell>{{anc.preg_no}}</clr-dg-cell>
+    <clr-dg-cell>{{anc.labor_date | toThaiDate }}</clr-dg-cell>
+    <clr-dg-cell>{{anc.force_complete_date | toThaiDate}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+    <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="openModalAnc" [clrModalClosable]="false" [clrModalSize]="'xl'">
+  <h3 class="modal-title">ประวัติฝากครรภ์ (Local)</h3>
+  <div class="modal-body">
+    <clr-tabs (clrTabsCurrentTabLinkChanged)="onTabAncSelected($event)">
+      <clr-tab-link [clrTabLinkId]="'local'" [clrTabLinkActive]="true">ฝากครรภ์ที่นี่</clr-tab-link>
+      <clr-tab-link [clrTabLinkId]="'hdc'">ฝากครรภ์ที่อื่น (HDC)</clr-tab-link>
+
+      <clr-tab-content [clrTabContentId]="'content1'" [clrTabContentActive]="true">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>วันที่</th>
+              <th>อายุครรภ์ (สัปดาห์)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>{{ ancLocals.pdate1 | toThaiDate }}</td>
+              <td>{{ ancLocals.ga1 }}</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>{{ ancLocals.pdate2 | toThaiDate }}</td>
+              <td>{{ ancLocals.ga2 }}</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>{{ ancLocals.pdate3 | toThaiDate }}</td>
+              <td>{{ ancLocals.ga3 }}</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>{{ ancLocals.pdate4 | toThaiDate }}</td>
+              <td>{{ ancLocals.ga4 }}</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>{{ ancLocals.pdate5 | toThaiDate }}</td>
+              <td>{{ ancLocals.ga5 }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </clr-tab-content>
+      <clr-tab-content>
+        <clr-datagrid [clrDgLoading]="loadingHistory">
+        <clr-dg-column>#</clr-dg-column>
+        <clr-dg-column>ครั้งที่ (ANCNO)</clr-dg-column>
+        <clr-dg-column [clrDgField]="'DATE_SERV'">วันที่</clr-dg-column>
+        <clr-dg-column>อายุครรภ์(สัปดาห์)</clr-dg-column>
+        <clr-dg-column [clrDgField]="'ANCPLACE'">หน่วยบริการ</clr-dg-column>
+        <clr-dg-column [clrDgField]="'HOSPCODE'">หน่วยบันทึก</clr-dg-column>
+        <clr-dg-placeholder>ไม่พบประวัติการฝากครรภ์</clr-dg-placeholder>
+
+        <clr-dg-row *clrDgItems="let anc of ancHistories; let idx = index;">
+          <clr-dg-cell>{{ idx + 1 }}</clr-dg-cell>
+          <clr-dg-cell>{{anc.ANCNO}}</clr-dg-cell>
+          <clr-dg-cell>{{anc.DATE_SERV | toThaiDate}}</clr-dg-cell>
+          <clr-dg-cell>{{anc.GA}}</clr-dg-cell>
+          <clr-dg-cell>{{anc.ANCPLACE}} {{ anc.service_hospname }}</clr-dg-cell>
+          <clr-dg-cell>{{anc.HOSPCODE}} {{ anc.owner_hospname }} (Type: {{ anc.TYPEAREA }})</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>{{ancHistories.length}} รายการ</clr-dg-footer>
+        </clr-datagrid>
+      </clr-tab-content>
+    </clr-tabs>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openModalAnc = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="openModalPost" [clrModalClosable]="false" [clrModalSize]="'lg'">
+  <h3 class="modal-title">ประวัติดดูแลหลังคลอด (Local)</h3>
+  <div class="modal-body">
+    <clr-tabs (clrTabsCurrentTabLinkChanged)="onTabPostSelected($event)">
+      <clr-tab-link [clrTabLinkId]="'local'" [clrTabLinkActive]="true">ดูแลหลังคลอด</clr-tab-link>
+      <clr-tab-link [clrTabLinkId]="'hdc'">ดูแลหลังคลอดที่อื่น (HDC)</clr-tab-link>
+
+      <clr-tab-content [clrTabContentId]="'content1'" [clrTabContentActive]="true">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>วันที่</th>
+              <th>จำนวนวันหลังคลอด</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>{{ postLocals.ldate1 | toThaiDate }}</td>
+              <td>{{ postLocals.care1 }}</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>{{ ancLocals.ldate2 | toThaiDate }}</td>
+              <td>{{ ancLocals.care2 }}</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>{{ ancLocals.ldate3 | toThaiDate }}</td>
+              <td>{{ ancLocals.care3 }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </clr-tab-content>
+      <clr-tab-content>
+        <clr-datagrid [clrDgLoading]="loadingHistory">
+        <clr-dg-column>#</clr-dg-column>
+        <clr-dg-column [clrDgField]="'PPCARE'">วันที่</clr-dg-column>
+        <clr-dg-column [clrDgField]="'PPPLACE'">หน่วยบริการ</clr-dg-column>
+        <clr-dg-placeholder>ไม่พบประวัติการฝากครรภ์</clr-dg-placeholder>
+
+        <clr-dg-row *clrDgItems="let post of postHistories; let idx = index;">
+          <clr-dg-cell>{{ idx + 1 }}</clr-dg-cell>
+          <clr-dg-cell>{{post.ANCNO}}</clr-dg-cell>
+          <clr-dg-cell>{{post.PPCARE | toThaiDate}}</clr-dg-cell>
+          <clr-dg-cell>{{post.PPPLACE}} {{ post.hospname }} (Type: {{ post.TYPEAREA }})</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>{{ancHistories.length}} รายการ</clr-dg-footer>
+        </clr-datagrid>
+      </clr-tab-content>
+    </clr-tabs>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openModalPost = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>

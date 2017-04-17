@@ -1,0 +1,75 @@
+<h3>การได้รับวัคซีน (แยกตามกลุ่มอายุ)</h3>
+<div class="row">
+  <div class="col-md-8">
+    <div class="form-group">
+            <label for="formFields_7">อายุตั้งแต่ (ปี)</label>
+            <input type="number" id="formFields_7" name="minAge" [(ngModel)]="minAge">
+            ถึง
+            <input type="number" id="formFields_7" name="maxAge" [(ngModel)]="maxAge">
+            <button class="btn btn-primary btn-sm" (click)="getTarget()">แสดง</button>
+        </div>
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-sm btn-success">ส่งออกกลุ่มเป้าหมาย (ตัวชี้วัด)</button>
+  </div>
+</div>
+<clr-datagrid [clrLoading]="loading">
+  <clr-dg-column [clrDgField]="'patient_hn'">HN</clr-dg-column>
+  <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
+  <clr-dg-column>วันเกิด</clr-dg-column>
+  <clr-dg-column [clrDgField]="'age'">อายุ (ปี)</clr-dg-column>
+  <clr-dg-column>เพศ</clr-dg-column>
+
+  <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+  <clr-dg-row *clrDgItems="let wbc of wbcs">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="showVaccine(wbc)">ประวัติวัคซีน</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{wbc.patient_hn}}</clr-dg-cell>
+    <clr-dg-cell>{{wbc.ptname}}</clr-dg-cell>
+    <clr-dg-cell>{{wbc.birthdate | toThaiDate }}</clr-dg-cell>
+    <clr-dg-cell>{{wbc.age | number }}</clr-dg-cell>
+    <clr-dg-cell>{{wbc.sex | toSexName }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+    <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+
+
+<clr-modal [(clrModalOpen)]="openModalVaccine" [clrModalClosable]="false" [clrModalSize]="'xl'">
+  <h3 class="modal-title">ประวัติการฉีดวัคซีน</h3>
+  <div class="modal-body">
+    <clr-datagrid [clrDgLoading]="loadingHistory">
+      <clr-dg-column [clrDgField]="'DATE_SERV'">วันที่</clr-dg-column>
+      <clr-dg-column [clrDgField]="'vaccine_name'">ชื่อวัคซีน</clr-dg-column>
+      <clr-dg-column [clrDgField]="'HOSPCODE'">หน่วยบันทึก</clr-dg-column>
+      <clr-dg-column [clrDgField]="'VACCINEPLACE'">หน่วยบริการ</clr-dg-column>
+      <clr-dg-column [clrDgField]="'DUPDATE'">ปรับปรุ่งล่าสุด</clr-dg-column>
+      <clr-dg-placeholder>ไม่พบประวัติการฝากครรภ์</clr-dg-placeholder>
+
+      <clr-dg-row *clrDgItems="let wbc of vaccineHistories;">
+        <clr-dg-cell>{{wbc.DATE_SERV | toThaiDate }}</clr-dg-cell>
+        <clr-dg-cell>{{wbc.VACCINETYPE}} - {{wbc.vaccine_name}}</clr-dg-cell>
+        <clr-dg-cell>{{wbc.HOSPCODE}} {{ wbc.owner_hospname }} (Type: {{ wbc.TYPEAREA }})</clr-dg-cell>
+        <clr-dg-cell>{{wbc.VACCINEPLACE}} {{ wbc.service_hospname }}</clr-dg-cell>
+        <clr-dg-cell>{{wbc.D_UPDATE | toThaiDate}}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        {{pagination2.firstItem + 1}} - {{pagination2.lastItem + 1}} of {{pagination2.totalItems}} รายการ
+        <clr-dg-pagination #pagination2 [clrDgPageSize]="6"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openModalVaccine = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>

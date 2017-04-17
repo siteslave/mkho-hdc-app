@@ -1,0 +1,11 @@
+.login-wrapper .login .login-group .btn {
+    margin: 10px 0 0 0;
+    max-width: none;
+}
+
+form .form-group, .form .form-group {
+  padding-left: 100px;
+}
+form .form-group>label:first-child, form .form-group>span:first-child, .form .form-group>label:first-child, .form .form-group>span:first-child {
+  width: 80px;
+}

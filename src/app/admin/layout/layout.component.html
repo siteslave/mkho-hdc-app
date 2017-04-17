@@ -1,0 +1,110 @@
+<clr-main-container>
+  <clr-header class="header-4">
+    <div class="branding">
+      <a class="nav-link">
+        <clr-icon shape="storage"></clr-icon>
+        <span class="title">My Apps</span>
+      </a>
+    </div>
+    <div class="header-nav">
+      <a class=" nav-link nav-icon" routerLink='/admin/anc' routerLinkActive='active'>
+        <clr-icon shape="user"></clr-icon>
+      </a>
+      <a class=" nav-link nav-icon" routerLink='/admin/vaccine' routerLinkActive='active'>
+        <clr-icon shape="group"></clr-icon>
+      </a>
+      <a class=" nav-link nav-icon" routerLink='/admin/chronic' routerLinkActive='active'>
+        <clr-icon shape="tools"></clr-icon>
+      </a>
+      <a class=" nav-link nav-icon" routerLink='/admin/wbc' routerLinkActive='active'>
+        <clr-icon shape="happy-face"></clr-icon>
+      </a>
+    </div>
+    <div class="header-actions">
+        <clr-dropdown class="dropdown bottom-right">
+            <button class="nav-text" clrDropdownToggle>
+                {{ fullname }}
+                <clr-icon shape="caret down"></clr-icon>
+            </button>
+            <div class="dropdown-menu">
+                <a href="javascript://" class="disabled" clrDropdownItem>{{ hospitalname }}</a>
+                <a href="javascript://" clrDropdownItem>Preferences</a>
+                <a (click)="logout()" clrDropdownItem>Log out</a>
+            </div>
+        </clr-dropdown>
+    </div>
+  </clr-header>
+  <nav class="subnav" [clr-nav-level]="2">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="javascript://" 
+        routerLink='/admin/anc' routerLinkActive='active'>ทะเบียนหญิงตั้งครรภ์</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="javascript://" 
+        routerLink='/admin/chronic' routerLinkActive='active'>ทะเบียนเบาหวาน/ความดัน</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="javascript://" 
+        routerLink='/admin/vaccine' routerLinkActive='active'>ข้อมูลวัคซีน</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="content-container">
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+
+    <nav class="sidenav" [clr-nav-level]="1">
+      <section class="sidenav-content">
+        <clr-tree-node [clrTreeNodeExpanded]="true">
+          เมนูหลัก
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/anc' routerLinkActive='active'>
+              <clr-icon shape="user"></clr-icon>
+              ทะเบียนหญิงตั้งครรภ์
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/wbc' routerLinkActive='active'>
+              <clr-icon shape="happy-face"></clr-icon>
+              ทะเบียนเด็กแรกเกิด
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/vaccine' routerLinkActive='active'>
+              <clr-icon shape="group"></clr-icon>
+              การรับวัคซีน (กลุ่มอายุ)
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/chronic' routerLinkActive='active'>
+              <clr-icon shape="tools"></clr-icon>
+              ทะเบียนเบาหวาน/ความดัน
+            </button>
+          </clr-tree-node>
+        </clr-tree-node>
+<!--
+        <clr-tree-node [clrTreeNodeExpanded]="true">
+          ข้อมูลพื้นฐาน
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/generice-dosages' routerLinkActive='active'>
+              <clr-icon shape="library"></clr-icon>
+              ข้อมูลกลุ่มเป้าหมาย
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/generice-types' routerLinkActive='active'>
+              <clr-icon shape="library"></clr-icon>
+              ทะเบียนผู้เสียชีวิต
+            </button>
+          </clr-tree-node>
+        </clr-tree-node>-->
+
+      </section>
+    </nav>
+
+  </div>
+
+</clr-main-container>

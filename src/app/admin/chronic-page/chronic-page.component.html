@@ -1,0 +1,169 @@
+<h3>ทะเบียนผู้ป่วยเบาหวาน/ความดัน</h3>
+<button class="btn btn-sm btn-success">ส่งออกกลุ่มเป้าหมาย (ตัวชี้วัด)</button>
+<clr-datagrid [clrLoading]="loading">
+  <clr-dg-column [clrDgField]="'hn'">HN</clr-dg-column>
+  <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
+  <clr-dg-column [clrDgField]="'age'">อายุ (ปี)</clr-dg-column>
+  <clr-dg-column [clrDgField]="'clinics'">คลินิก</clr-dg-column>
+  <clr-dg-column>ปีที่เป็น</clr-dg-column>
+  <clr-dg-column>นัดครั้งต่อไป</clr-dg-column>
+  <clr-dg-column>ตรวจ hbA1C ล่าสุด</clr-dg-column>
+
+  <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+  <clr-dg-row *clrDgItems="let chronic of chronics">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="showLab(chronic)">ผลตรวจห้องปฎิบัติการ</button>
+      <button class="action-item" (click)="showChronicFu(chronic)">ประวัติการตรวจรักษา</button>
+      <button class="action-item" (click)="showAdmission(chronic)">ประวัติการนอนโรงพยาบาล</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{chronic.hn}}</clr-dg-cell>
+    <clr-dg-cell>{{chronic.ptname}}</clr-dg-cell>
+    <clr-dg-cell>{{chronic.age}}</clr-dg-cell>
+    <clr-dg-cell>{{chronic.clinics}}</clr-dg-cell>
+    <clr-dg-cell>{{chronic.begin_year}}</clr-dg-cell>
+    <clr-dg-cell>{{chronic.next_app_date | toThaiDate }}</clr-dg-cell>
+    <clr-dg-cell>{{chronic.last_hba1c_date | toThaiDate }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+    <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="openModalLab" [clrModalClosable]="false" [clrModalSize]="'xl'">
+  <h3 class="modal-title">ประวัติผลตรวจทางห้องปฏิบัติการ</h3>
+  <div class="modal-body">
+    <clr-datagrid [clrDgLoading]="loadingHistory">
+      <clr-dg-column [clrDgField]="'DATE_SERV'">วันที่</clr-dg-column>
+      <clr-dg-column [clrDgField]="'LABTEST'">รหัส LAB</clr-dg-column>
+      <clr-dg-column>ชื่อ LAB</clr-dg-column>
+      <clr-dg-column>ผล</clr-dg-column>
+      <clr-dg-column [clrDgField]="'HOSPCODE'">หน่วยบริการ</clr-dg-column>
+      <clr-dg-placeholder>ไม่พบประวัติ</clr-dg-placeholder>
+
+      <clr-dg-row *clrDgItems="let lab of labHistories;">
+        <clr-dg-cell>{{ lab.DATE_SERV | toThaiDate }}</clr-dg-cell>
+        <clr-dg-cell>{{ lab.LABTEST }}</clr-dg-cell>
+        <clr-dg-cell>{{ lab.new_name || lab.old_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ lab.LABRESULT }}</clr-dg-cell>
+        <clr-dg-cell>{{ lab.HOSPCODE }} - {{ lab.hospname }} (Type: {{ lab.TYPEAREA }})</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        {{pagination1.firstItem + 1}} - {{pagination1.lastItem + 1}} of {{pagination1.totalItems}} รายการ
+        <clr-dg-pagination #pagination1 [clrDgPageSize]="6"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openModalLab = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="openModalChronicFu" [clrModalClosable]="false" [clrModalSize]="'xl'">
+  <h3 class="modal-title">ประวัติผลตรวจทั่วไป</h3>
+  <div class="modal-body">
+    <clr-datagrid [clrDgLoading]="loadingHistory">
+      <clr-dg-column [clrDgField]="'DATE_SERV'">วันที่</clr-dg-column>
+      <clr-dg-column>ความดัน</clr-dg-column>
+      <clr-dg-column>ผลตรวจตา</clr-dg-column>
+      <clr-dg-column>ผลตรวจเท้า</clr-dg-column>
+      <clr-dg-column [clrDgField]="'HOSPCODE'">หน่วยบริการ</clr-dg-column>
+      <clr-dg-placeholder>ไม่พบประวัติ</clr-dg-placeholder>
+
+      <clr-dg-row *clrDgItems="let chronic of chronicFuHistories;">
+        <clr-dg-cell>{{ chronic.DATE_SERV | toThaiDate }}</clr-dg-cell>
+        <clr-dg-cell>{{ chronic.SBP }}/{{chronic.DBP}}</clr-dg-cell>
+        <clr-dg-cell>{{ chronic.retina_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ chronic.foot_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ chronic.HOSPCODE }} - {{ chronic.hospname }} (Type: {{ chronic.TYPEAREA }})</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        {{pagination2.firstItem + 1}} - {{pagination2.lastItem + 1}} of {{pagination2.totalItems}} รายการ
+        <clr-dg-pagination #pagination2 [clrDgPageSize]="6"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openModalChronicFu = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="openModalAdmission" [clrModalClosable]="false" [clrModalSize]="'xl'">
+  <h3 class="modal-title">ประวัติการเข้านอนโรงพยาบาล</h3>
+  <div class="modal-body">
+    <clr-datagrid [clrDgLoading]="loadingHistory">
+      <clr-dg-column [clrDgField]="'DATETIME_ADMIT'">วันที่/เวลา</clr-dg-column>
+      <clr-dg-column>สิทธิการรักษา</clr-dg-column>
+      <clr-dg-column>ส่งต่อ</clr-dg-column>
+      <clr-dg-column>สถานะจำหน่วย</clr-dg-column>
+      <clr-dg-column>ประเภทจำหน่าย</clr-dg-column>
+      <clr-dg-column>หน่วยบริการ</clr-dg-column>
+      <clr-dg-column></clr-dg-column>
+      <clr-dg-placeholder>ไม่พบประวัติ</clr-dg-placeholder>
+
+      <clr-dg-row *clrDgItems="let a of admissions;">
+        <clr-dg-cell>{{ a.DATETIME_ADMIT | toThaiDate }} เวลา {{ a.DATETIME_ADMIT | toShortTime }} น.</clr-dg-cell>
+        <clr-dg-cell>{{ a.instype_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ a.REFEROUTHOSP }} - {{ a.refer_hospname }}</clr-dg-cell>
+        <clr-dg-cell>{{ a.dischstatus_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ a.disctype_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ a.HOSPCODE }} - {{ a.hospname }}</clr-dg-cell>
+        <clr-dg-cell>
+          <a href="javascript://" class="label label-success clickable" (click)="showAdmissionHomeDrug(a)">
+              ยากลับบ้าน
+          </a>
+        </clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        {{pagination3.firstItem + 1}} - {{pagination3.lastItem + 1}} of {{pagination3.totalItems}} รายการ
+        <clr-dg-pagination #pagination3 [clrDgPageSize]="6"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openModalAdmission = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="openModalDrug" [clrModalClosable]="false" [clrModalSize]="'lg'">
+  <h3 class="modal-title">ยาที่รับกลับบ้าน</h3>
+  <div class="modal-body">
+    <clr-datagrid [clrDgLoading]="loadingDrug">
+      <clr-dg-column>ชื่อยา</clr-dg-column>
+      <clr-dg-column>จำนวน</clr-dg-column>
+      <clr-dg-column>หน่วย</clr-dg-column>
+      <clr-dg-placeholder>ไม่พบประวัติ</clr-dg-placeholder>
+
+      <clr-dg-row *clrDgItems="let d of drugs;">
+        <clr-dg-cell>{{ d.DNAME }}</clr-dg-cell>
+        <clr-dg-cell>{{ d.AMOUNT | number }}</clr-dg-cell>
+        <clr-dg-cell>{{ d.unit_name }}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        {{pagination4.firstItem + 1}} - {{pagination4.lastItem + 1}} of {{pagination4.totalItems}} รายการ
+        <clr-dg-pagination #pagination4 [clrDgPageSize]="6"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openModalDrug = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>

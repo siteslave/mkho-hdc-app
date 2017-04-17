@@ -1,0 +1,69 @@
+<clr-main-container>
+    <clr-header class="header-4">
+      <div class="branding">
+        <a class="nav-link">
+          <clr-icon shape="shield"></clr-icon>
+          <span class="title">My Apps</span>
+        </a>
+      </div>
+    </clr-header>
+    <div class="login-wrapper">
+      <form class="login">
+        <label class="title">
+          My Apps&#174;
+        </label>
+        <p></p>
+        <clr-tabs>
+          <clr-tab-link [clrTabLinkId]="'link1'" [clrTabLinkActive]="true">เข้าสู่ระบบ</clr-tab-link>
+          <clr-tab-link>กำหนดค่าเชื่อมต่อ</clr-tab-link>
+
+            <clr-tab-content [clrTabContentId]="'content1'" [clrTabContentActive]="true">
+              <div class="login-group">
+                <input (keypress)="enterLogin($event)" class="username" [(ngModel)]="username" type="text" name="login_username" placeholder="Username">
+                <input (keypress)="enterLogin($event)" class="password" [(ngModel)]="password" type="password" name="login_password" placeholder="Password">
+                <div style="text-align: center" *ngIf="isLogging">
+                  <span class="spinner spinner-inline">
+                    Loading...
+                  </span>
+                  <span>
+                    Logging in...
+                  </span>
+                </div>
+                <button type="button" (click)="doLogin()" class="btn btn-primary" [disabled]="!username || !password || isLogging">LOG IN</button>
+              </div>
+            </clr-tab-content>
+            <clr-tab-content>
+              <section class="form-block">
+                <label>กำหนดค่าการเชื่อมต่อ</label>
+                <div class="form-group">
+                  <label for="aForm_1">Host</label>
+                  <input type="text" name="dbHost" [(ngModel)]="dbHost">
+                </div>
+                <div class="form-group">
+                  <label for="aForm_1">Port</label>
+                  <input type="number" name="dbHost" [(ngModel)]="dbPort">
+                </div>
+                <div class="form-group">
+                  <label for="aForm_2">Database</label>
+                  <input type="text" name="dbName" [(ngModel)]="dbName">
+                </div>
+                <div class="form-group">
+                  <label for="aForm_2">User</label>
+                  <input type="text" name="dbUser" [(ngModel)]="dbUser">
+                </div>
+                <div class="form-group">
+                  <label for="aForm_2">Password</label>
+                  <input type="password" name="dbPassword" [(ngModel)]="dbPassword">
+                </div>
+                <div class="form-group">
+                  <label for="aForm_2">API Url</label>
+                  <input type="text" name="apiUrl" [(ngModel)]="apiUrl">
+                </div>
+                <button type="button" class="btn btn-primary btn-sm" (click)="saveConfig()"
+                [disabled]="!dbHost || !dbName || !dbUser || !apiUrl">บันทึก</button>
+              </section>
+            </clr-tab-content>
+          </clr-tabs>
+        </form>
+    </div>
+</clr-main-container>
