@@ -1,5 +1,7 @@
 import * as mysql from 'mysql';
 import { IConnection, IConnectionConfig } from 'mysql';
+import { AlertService } from './alert.service';
+const alertService = new AlertService();
 
 export class Configure {
   getConnection() {
@@ -17,6 +19,7 @@ export class Configure {
       pool.getConnection((err, connection: IConnection) => {
         if (err) {
           console.log(err);
+          alertService.error(JSON.stringify(err.message));
           reject(err);
         } else {
           resolve(connection);
