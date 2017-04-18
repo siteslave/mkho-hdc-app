@@ -1,10 +1,9 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
+require('electron-dl')();
 const path = require('path')
 const url = require('url')
 
-require('electron-dl')();
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+const {download} = require('electron-dl');
 let win
 
 ipcMain.on('close-app', (event, arg) => {

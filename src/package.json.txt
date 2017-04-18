@@ -15,6 +15,6 @@
   "author": "Satit Rianpit",
   "license": "MIT",
   "devDependencies": {
-    "electron": "~1.6.2"
+    "electron-dl": "^1.8.0"
   }
 }
