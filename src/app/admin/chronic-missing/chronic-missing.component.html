@@ -1,0 +1,96 @@
+<h3>ผู้ป่วยที่ถูกวินิจฉัยเป็นโรคเรื้อรังและยังไม่ได้ขึ้นทะเบียน</h3>
+
+<button class="btn btn-sm btn-success" (click)="exportNotRegister()" [disabled]="!dismissChronics.length || loading">Excel Export</button>
+<span *ngIf="loading" class="spinner spinner-inline">กรุณารอซักครู่...</span>
+<span *ngIf="loading">กรุณารอซักครู่...</span>
+
+<clr-datagrid>
+  <clr-dg-column [clrDgField]="'cid'">CID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
+  <clr-dg-column [clrDgField]="'age'">อายุ (ปี)</clr-dg-column>
+  <clr-dg-column [clrDgField]="'dxcode'">วินิจฉัย</clr-dg-column>
+  <clr-dg-column>วันที่วินิจฉัย</clr-dg-column>
+  <clr-dg-column>หน่วยบริการที่วินิจฉัย</clr-dg-column>
+  <!--<clr-dg-column>สถานะ</clr-dg-column>-->
+  <clr-dg-column>ที่มา</clr-dg-column>
+
+  <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+  <clr-dg-row *clrDgItems="let c of dismissChronics">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="getIncorrectDiag(c)">ข้อมูลการวินิจฉัย/จ่ายยา</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{c.cid}}</clr-dg-cell>
+    <clr-dg-cell>{{c.ptname}}</clr-dg-cell>
+    <clr-dg-cell>{{c.age}}</clr-dg-cell>
+    <clr-dg-cell>{{c.dxcode}}</clr-dg-cell>
+    <clr-dg-cell>{{c.date_dx | toThaiDate}}</clr-dg-cell>
+    <clr-dg-cell>{{c.input_hosp}} - {{ c.input_hospname}}</clr-dg-cell>
+    <!--<clr-dg-cell>{{c.typedisch_name}}</clr-dg-cell>-->
+    <clr-dg-cell>{{c.source_tb}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+    <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="openModalIncorrectDiag" [clrModalClosable]="false" [clrModalSize]="'xl'">
+  <h3 class="modal-title">ข้อมูลการวินิจฉัย/จ่ายยา</h3>
+  <div class="modal-body">
+
+    <clr-tabs (clrTabsCurrentTabLinkChanged)="onTabSelected($event)">
+      <clr-tab-link [clrTabLinkId]="'diag'" [clrTabLinkActive]="true">การวินิจฉัย</clr-tab-link>
+      <clr-tab-link [clrTabLinkId]="'drug'">เวชภัณฑ์ยา</clr-tab-link>
+      <clr-tab-content [clrTabContentId]="'content1'" [clrTabContentActive]="true">
+        <clr-datagrid [clrDgLoading]="loadingDiag">
+          <clr-dg-column>รหัสวินิจฉัย</clr-dg-column>
+          <clr-dg-column>คำอธิบาย</clr-dg-column>
+          <clr-dg-column>ประเภทวินิจฉัย</clr-dg-column>
+          <!--<clr-dg-column>หน่วยบริการ</clr-dg-column>-->
+
+          <clr-dg-placeholder>ไม่พบประวัติ</clr-dg-placeholder>
+
+          <clr-dg-row *clrDgItems="let d of diagIncorrects;">
+            <clr-dg-cell>{{ d.DIAGCODE }}</clr-dg-cell>
+            <clr-dg-cell>{{ d.diagename }}</clr-dg-cell>
+            <clr-dg-cell>{{ d.diagtype_name }}</clr-dg-cell>
+            <!--<clr-dg-cell>{{ d.HOSPCODE }} - {{ d.hospname }}</clr-dg-cell>-->
+          </clr-dg-row>
+
+          <clr-dg-footer>
+            {{pagination1.firstItem + 1}} - {{pagination1.lastItem + 1}} of {{pagination1.totalItems}} รายการ
+            <clr-dg-pagination #pagination1 [clrDgPageSize]="6"></clr-dg-pagination>
+          </clr-dg-footer>
+        </clr-datagrid>
+      </clr-tab-content>
+      <clr-tab-content>
+        <clr-datagrid>
+          <clr-dg-column>ชื่อยา</clr-dg-column>
+          <clr-dg-column>จำนวน</clr-dg-column>
+          <clr-dg-column>หน่วย</clr-dg-column>
+
+          <clr-dg-placeholder>ไม่พบประวัติ</clr-dg-placeholder>
+
+          <clr-dg-row *clrDgItems="let d of drugs;">
+            <clr-dg-cell>{{ d.DNAME }}</clr-dg-cell>
+            <clr-dg-cell>{{ d.AMOUNT | number }}</clr-dg-cell>
+            <clr-dg-cell>{{ d.unit_name }}</clr-dg-cell>
+          </clr-dg-row>
+
+          <clr-dg-footer>
+            {{pagination2.firstItem + 1}} - {{pagination2.lastItem + 1}} of {{pagination2.totalItems}} รายการ
+            <clr-dg-pagination #pagination2 [clrDgPageSize]="6"></clr-dg-pagination>
+          </clr-dg-footer>
+        </clr-datagrid>
+      </clr-tab-content>
+    </clr-tabs>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openModalIncorrectDiag = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>

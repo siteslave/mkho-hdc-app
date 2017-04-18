@@ -8,6 +8,7 @@ import { AncPageComponent } from './anc-page/anc-page.component';
 import { WbcPageComponent } from './wbc-page/wbc-page.component';
 import { VaccinePageComponent } from './vaccine-page/vaccine-page.component';
 import { ChronicPageComponent } from './chronic-page/chronic-page.component';
+import { ChronicMissingComponent } from './chronic-missing/chronic-missing.component';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'wbc', component: WbcPageComponent },
       { path: 'vaccine', component: VaccinePageComponent },
       { path: 'chronic', component: ChronicPageComponent },
+      { path: 'chronic-missing', component: ChronicMissingComponent },
       { path: '**', component: PageNotFoundComponent },
     ]
   }

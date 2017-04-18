@@ -161,45 +161,4 @@ export class ChronicPageComponent implements OnInit {
         });
     }, 1000);
   }
-
-  getNotRegisterChronic() {
-    this.loading = true;
-    this.dismissChronics = [];
-    this.chronicService.hdcNotRegister(this.hospcode)
-      .then((result: any) => {
-        if (result.ok) {
-          this.dismissChronics = result.rows;
-        } else {
-          this.alertService.error(JSON.stringify(result.message));
-        }
-        this.loading = false;
-        this.ref.detectChanges();
-      })
-      .catch(() => {
-        this.loading = false;
-        this.alertService.serverError();
-      });
-  }
-
-  exportNotRegister() {
-    const downloadUrl = `${this.url}/chronic/not-register/excel?token=${this.token}&hospcode=${this.hospcode}`;
-    const option = { url: downloadUrl };
-
-    this.loading = true;
-    ipcRenderer.on('downloaded', (event, arg) => {
-      this.loading = false;
-      if (arg.ok) {
-        this.alertService.success();
-      } else {
-        this.alertService.error(arg.message);
-      }
-    });
-    ipcRenderer.send('download-file', option);
-  }
-
-  onTabSelected(event) {
-    if (event.id === 'not-register') {
-      this.getNotRegisterChronic();
-    }
-  }
 }

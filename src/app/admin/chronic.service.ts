@@ -93,10 +93,43 @@ export class ChronicService {
     });
   }
 
+  hdcGetIncorrectDiag(hospcode: string, pid: string, dateServ: string, sourceTb) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.url}/chronic/incorrect-diag`, {
+        hospcode: hospcode,
+        pid: pid,
+        dateServ: dateServ,
+        sourceTb: sourceTb
+      })
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
   hdcNotRegister(hospcode: string) {
     return new Promise((resolve, reject) => {
       this.authHttp.post(`${this.url}/chronic/not-register`, {
         hospcode: hospcode
+      })
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
+  hdcGetDrugs(hospcode: string, an: string, seq: string) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.url}/chronic/drugs`, {
+        hospcode: hospcode,
+        seq: seq,
+        an: an
       })
         .map(res => res.json())
         .subscribe(data => {

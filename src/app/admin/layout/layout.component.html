@@ -3,7 +3,7 @@
     <div class="branding">
       <a class="nav-link">
         <clr-icon shape="storage"></clr-icon>
-        <span class="title">iProfile</span>
+        <span class="title">iProfile v1.0.1</span>
       </a>
     </div>
     <div class="header-nav">
@@ -78,29 +78,23 @@
               การรับวัคซีน (กลุ่มอายุ)
             </button>
           </clr-tree-node>
+        </clr-tree-node>
+
+        <clr-tree-node [clrTreeNodeExpanded]="true">
+          ข้อมูลโรคเรื้อรัง
           <clr-tree-node>
             <button class="clr-treenode-link" routerLink='/admin/chronic' routerLinkActive='active'>
               <clr-icon shape="tools"></clr-icon>
-              ทะเบียนเบาหวาน/ความดัน
+              ทะเบียนผู้ป่วย
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/chronic-missing' routerLinkActive='active'>
+              <clr-icon shape="library"></clr-icon>
+              ผู้ป่วยรอลงทะเบียน
             </button>
           </clr-tree-node>
         </clr-tree-node>
-<!--
-        <clr-tree-node [clrTreeNodeExpanded]="true">
-          ข้อมูลพื้นฐาน
-          <clr-tree-node>
-            <button class="clr-treenode-link" routerLink='/admin/generice-dosages' routerLinkActive='active'>
-              <clr-icon shape="library"></clr-icon>
-              ข้อมูลกลุ่มเป้าหมาย
-            </button>
-          </clr-tree-node>
-          <clr-tree-node>
-            <button class="clr-treenode-link" routerLink='/admin/generice-types' routerLinkActive='active'>
-              <clr-icon shape="library"></clr-icon>
-              ทะเบียนผู้เสียชีวิต
-            </button>
-          </clr-tree-node>
-        </clr-tree-node>-->
 
       </section>
     </nav>

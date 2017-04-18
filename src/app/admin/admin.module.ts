@@ -20,6 +20,7 @@ import { AncPageComponent } from './anc-page/anc-page.component';
 import { WbcPageComponent } from './wbc-page/wbc-page.component';
 import { VaccinePageComponent } from './vaccine-page/vaccine-page.component';
 import { ChronicPageComponent } from './chronic-page/chronic-page.component';
+import { ChronicMissingComponent } from './chronic-missing/chronic-missing.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { ChronicPageComponent } from './chronic-page/chronic-page.component';
     AncPageComponent,
     WbcPageComponent,
     VaccinePageComponent,
-    ChronicPageComponent],
+    ChronicPageComponent,
+    ChronicMissingComponent],
   providers: [
     MainService,
     AlertService,
