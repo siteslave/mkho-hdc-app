@@ -8,7 +8,6 @@ import { HelperModule } from '../helper/helper.module';
 import { LoginPageComponent } from './login-page/login-page.component';
 
 import { LoginService } from './login.service';
-import { SettingPageComponent } from './setting-page/setting-page.component';
 
 @NgModule({
   imports: [
@@ -18,7 +17,7 @@ import { SettingPageComponent } from './setting-page/setting-page.component';
     HelperModule,
     ClarityModule
   ],
-  declarations: [LoginPageComponent, SettingPageComponent],
+  declarations: [LoginPageComponent],
   providers: [LoginService]
 })
 export class LoginModule { }

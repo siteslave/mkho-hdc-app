@@ -1,6 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { ChronicService } from '../chronic.service';
 import { AlertService } from '../../alert.service';
+const { ipcRenderer } = require('electron');
+
+// const request = require('request');
+const fse = require('fs-extra');
 
 import { IConnection } from 'mysql';
 import { Configure } from '../../configure';
@@ -15,6 +19,10 @@ export class ChronicPageComponent implements OnInit {
   configure: Configure = new Configure();
   connection: IConnection;
   chronics: any[] = [];
+  dismissChronics: any[] = [];
+
+  token: string;
+  hospcode: string;
   admissions: any[] = [];
   drugs: any[] = [];
 
@@ -31,14 +39,19 @@ export class ChronicPageComponent implements OnInit {
   constructor(
     private chronicService: ChronicService,
     private alertService: AlertService,
-    private ref: ChangeDetectorRef
-  ) { }
+    private ref: ChangeDetectorRef,
+    @Inject('API_URL') private url: string
+  ) { 
+    this.hospcode = sessionStorage.getItem('hospcode');
+    this.token = sessionStorage.getItem('token');
+  }
 
   ngOnInit() {
     this.all();
   }
 
   all() {
+    this.loading = true;
     this.configure.getConnection()
       .then((conn: IConnection) => {
         this.connection = conn;
@@ -47,9 +60,11 @@ export class ChronicPageComponent implements OnInit {
       .then((result: any) => {
         this.chronics = result;
         this.connection.destroy();
+        this.loading = false;
         this.ref.detectChanges();
       })
       .catch(err => {
+        this.loading = false;
         this.connection.destroy();
         this.alertService.error(JSON.stringify(err));
       });
@@ -145,5 +160,46 @@ export class ChronicPageComponent implements OnInit {
           that.alertService.serverError();
         });
     }, 1000);
+  }
+
+  getNotRegisterChronic() {
+    this.loading = true;
+    this.dismissChronics = [];
+    this.chronicService.hdcNotRegister(this.hospcode)
+      .then((result: any) => {
+        if (result.ok) {
+          this.dismissChronics = result.rows;
+        } else {
+          this.alertService.error(JSON.stringify(result.message));
+        }
+        this.loading = false;
+        this.ref.detectChanges();
+      })
+      .catch(() => {
+        this.loading = false;
+        this.alertService.serverError();
+      });
+  }
+
+  exportNotRegister() {
+    const downloadUrl = `${this.url}/chronic/not-register/excel?token=${this.token}&hospcode=${this.hospcode}`;
+    const option = { url: downloadUrl };
+
+    this.loading = true;
+    ipcRenderer.on('downloaded', (event, arg) => {
+      this.loading = false;
+      if (arg.ok) {
+        this.alertService.success();
+      } else {
+        this.alertService.error(arg.message);
+      }
+    });
+    ipcRenderer.send('download-file', option);
+  }
+
+  onTabSelected(event) {
+    if (event.id === 'not-register') {
+      this.getNotRegisterChronic();
+    }
   }
 }

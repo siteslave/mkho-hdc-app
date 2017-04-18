@@ -1,54 +1,67 @@
-const {app, BrowserWindow} = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron');
+require('electron-dl')();
+
 const path = require('path')
 const url = require('url')
 
+
+const {download} = require('electron-dl');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
+ipcMain.on('close-app', (event, arg) => {
+  event.returnValue = null
+  app.quit();
+});
+
+ipcMain.on('download-file', (event, args) => {
+  const options = {
+    saveAs: true,
+    openFolderWhenDone: true
+  }
+	download(BrowserWindow.getFocusedWindow(), args.url, options)
+    .then(dl => {
+      console.log(dl.getSavePath());
+      let result = { ok: true, path: dl.getSavePath() };
+      event.sender.send('downloaded', result);
+    })
+		.catch((err) => event.sender.send('downloaded', {ok: false, message: err}));
+});
+
 function createWindow () {
   setTimeout(() => {
     // Create the browser window.
-    win = new BrowserWindow({width: 800, height: 600})
+    win = new BrowserWindow({
+      width: 800,
+      height: 600,
+      title: 'iProfile: ระบบตรวจสอบข้อมูลบน HDC'
+    });
 
-    // and load the index.html of the app.
     win.loadURL(url.format({
       pathname: 'localhost:4200',
       protocol: 'http:',
       slashes: true
-    }))
+    }));
 
-    // Open the DevTools when in dev mode.
-    if(process.env.NODE_ENV=='development')
-      win.webContents.openDevTools()
+    win.maximize();    
+    // win.webContents.openDevTools()
 
-    // Emitted when the window is closed.
     win.on('closed', () => {
-      // Dereference the window object, usually you would store windows
-      // in an array if your app supports multi windows, this is the time
-      // when you should delete the corresponding element.
       win = null
     })
   }, 12000)
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow)
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (win === null) {
     createWindow()
   }

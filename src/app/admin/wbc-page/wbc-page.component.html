@@ -1,5 +1,11 @@
 <h3>ทะเบียนเด็กแรกเกิด (0-1 ปี)</h3>
 <button class="btn btn-sm btn-success">ส่งออกกลุ่มเป้าหมาย (ตัวชี้วัด)</button>
+<span *ngIf="loading" class="spinner spinner-inline">
+  กรุณารอซักครู่...
+</span>
+<span *ngIf="loading">
+  กรุณารอซักครู่...
+</span>
 <clr-datagrid [clrLoading]="loading">
   <clr-dg-column [clrDgField]="'patient_hn'">HN</clr-dg-column>
   <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>

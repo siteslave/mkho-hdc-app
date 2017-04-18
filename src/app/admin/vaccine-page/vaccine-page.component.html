@@ -13,6 +13,12 @@
     <button class="btn btn-sm btn-success">ส่งออกกลุ่มเป้าหมาย (ตัวชี้วัด)</button>
   </div>
 </div>
+<span *ngIf="loading" class="spinner spinner-inline">
+  กรุณารอซักครู่...
+</span>
+<span *ngIf="loading">
+  กรุณารอซักครู่...
+</span>
 <clr-datagrid [clrLoading]="loading">
   <clr-dg-column [clrDgField]="'patient_hn'">HN</clr-dg-column>
   <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>

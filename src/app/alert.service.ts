@@ -56,4 +56,18 @@ export class AlertService {
     };
      return swal(option);
   }
+
+  confirmExit(text = 'คุณต้องการปิดโปรแกรม ใช่หรือไม่?', ) {
+    const option: SweetAlertOptions = {
+      title: 'Are you sure?',
+      text: text,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ใช่, ปิดโปรแกรม!',
+      cancelButtonText: 'ยกเลิก'
+    };
+     return swal(option);
+  }
 }

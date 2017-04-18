@@ -1,36 +1,86 @@
 <h3>ทะเบียนผู้ป่วยเบาหวาน/ความดัน</h3>
 <button class="btn btn-sm btn-success">ส่งออกกลุ่มเป้าหมาย (ตัวชี้วัด)</button>
-<clr-datagrid [clrLoading]="loading">
-  <clr-dg-column [clrDgField]="'hn'">HN</clr-dg-column>
-  <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
-  <clr-dg-column [clrDgField]="'age'">อายุ (ปี)</clr-dg-column>
-  <clr-dg-column [clrDgField]="'clinics'">คลินิก</clr-dg-column>
-  <clr-dg-column>ปีที่เป็น</clr-dg-column>
-  <clr-dg-column>นัดครั้งต่อไป</clr-dg-column>
-  <clr-dg-column>ตรวจ hbA1C ล่าสุด</clr-dg-column>
+<clr-tabs (clrTabsCurrentTabLinkChanged)="onTabSelected($event)">
+  <clr-tab-link [clrTabLinkId]="'link1'" [clrTabLinkActive]="true">ทะเบียนเบาหวานความดัน</clr-tab-link>
+  <clr-tab-link [clrTabLinkId]="'not-register'">ผู้ป่วยรอขึ้นทะเบียน</clr-tab-link>
 
-  <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+  <clr-tab-content [clrTabContentId]="'content1'" [clrTabContentActive]="true">
+    <div *ngIf="loading">
+      <span class="spinner spinner-inline">
+        กรุณารอซักครู่...
+      </span>
+      <span>
+        กรุณารอซักครู่...
+      </span>
+    </div>  
+    <clr-datagrid>
+      <clr-dg-column [clrDgField]="'hn'">HN</clr-dg-column>
+      <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
+      <clr-dg-column [clrDgField]="'age'">อายุ (ปี)</clr-dg-column>
+      <clr-dg-column [clrDgField]="'clinics'">คลินิก</clr-dg-column>
+      <clr-dg-column>ปีที่เป็น</clr-dg-column>
+      <clr-dg-column>นัดครั้งต่อไป</clr-dg-column>
+      <clr-dg-column>ตรวจ hbA1C ล่าสุด</clr-dg-column>
 
-  <clr-dg-row *clrDgItems="let chronic of chronics">
-    <clr-dg-action-overflow>
-      <button class="action-item" (click)="showLab(chronic)">ผลตรวจห้องปฎิบัติการ</button>
-      <button class="action-item" (click)="showChronicFu(chronic)">ประวัติการตรวจรักษา</button>
-      <button class="action-item" (click)="showAdmission(chronic)">ประวัติการนอนโรงพยาบาล</button>
-    </clr-dg-action-overflow>
-    <clr-dg-cell>{{chronic.hn}}</clr-dg-cell>
-    <clr-dg-cell>{{chronic.ptname}}</clr-dg-cell>
-    <clr-dg-cell>{{chronic.age}}</clr-dg-cell>
-    <clr-dg-cell>{{chronic.clinics}}</clr-dg-cell>
-    <clr-dg-cell>{{chronic.begin_year}}</clr-dg-cell>
-    <clr-dg-cell>{{chronic.next_app_date | toThaiDate }}</clr-dg-cell>
-    <clr-dg-cell>{{chronic.last_hba1c_date | toThaiDate }}</clr-dg-cell>
-  </clr-dg-row>
+      <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
 
-  <clr-dg-footer>
-    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
-    <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
-  </clr-dg-footer>
-</clr-datagrid>
+      <clr-dg-row *clrDgItems="let chronic of chronics">
+        <clr-dg-action-overflow>
+          <button class="action-item" (click)="showLab(chronic)">ผลตรวจห้องปฎิบัติการ</button>
+          <button class="action-item" (click)="showChronicFu(chronic)">ประวัติการตรวจรักษา</button>
+          <button class="action-item" (click)="showAdmission(chronic)">ประวัติการนอนโรงพยาบาล</button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{chronic.hn}}</clr-dg-cell>
+        <clr-dg-cell>{{chronic.ptname}}</clr-dg-cell>
+        <clr-dg-cell>{{chronic.age}}</clr-dg-cell>
+        <clr-dg-cell>{{chronic.clinics}}</clr-dg-cell>
+        <clr-dg-cell>{{chronic.begin_year}}</clr-dg-cell>
+        <clr-dg-cell>{{chronic.next_app_date | toThaiDate }}</clr-dg-cell>
+        <clr-dg-cell>{{chronic.last_hba1c_date | toThaiDate }}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  </clr-tab-content>
+  <clr-tab-content>
+    <button class="btn btn-sm btn-success" (click)="exportNotRegister()" [disabled]="!dismissChronics.length">ส่งออก Excel</button>
+  
+    <span *ngIf="loading" class="spinner spinner-inline">
+      กรุณารอซักครู่...
+    </span>
+    <span *ngIf="loading">
+      กรุณารอซักครู่...
+    </span>
+   
+    <clr-datagrid>
+      <clr-dg-column [clrDgField]="'cid'">CID</clr-dg-column>
+      <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
+      <clr-dg-column [clrDgField]="'age'">อายุ (ปี)</clr-dg-column>
+      <clr-dg-column [clrDgField]="'dxcode'">วินิจฉัย</clr-dg-column>
+      <clr-dg-column>วันที่วินิจฉัย</clr-dg-column>
+      <clr-dg-column>หน่วยบริการที่วินิจฉัย</clr-dg-column>
+
+      <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+      <clr-dg-row *clrDgItems="let c of dismissChronics">
+        <clr-dg-cell>{{c.cid}}</clr-dg-cell>
+        <clr-dg-cell>{{c.ptname}}</clr-dg-cell>
+        <clr-dg-cell>{{c.age}}</clr-dg-cell>
+        <clr-dg-cell>{{c.dxcode}}</clr-dg-cell>
+        <clr-dg-cell>{{c.date_dx | toThaiDate}}</clr-dg-cell>
+        <clr-dg-cell>{{c.input_hosp}} - {{ c.input_hospname}}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        {{pagination1.firstItem + 1}} - {{pagination1.lastItem + 1}} of {{pagination1.totalItems}} รายการ
+        <clr-dg-pagination #pagination1 [clrDgPageSize]="10"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  </clr-tab-content>
+</clr-tabs>
 
 <clr-modal [(clrModalOpen)]="openModalLab" [clrModalClosable]="false" [clrModalSize]="'xl'">
   <h3 class="modal-title">ประวัติผลตรวจทางห้องปฏิบัติการ</h3>

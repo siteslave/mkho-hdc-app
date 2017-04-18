@@ -1,12 +1,12 @@
 {
-  "name": "mkho-hdc",
+  "name": "iprofile",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "concurrently \"cpx config/common.js node_modules/@angular/cli/models/webpack-configs\" \"ng serve\" \"electron src/entry.live.js\"",
     "run": "electron .",
-    "build": "concurrently \"cpx config/common.js node_modules/@angular/cli/models/webpack-configs\" \"ng build --base-href=./\" \"cpx src/entry.js ./dist/\"",
+    "build": "concurrently \"cpx config/common.js node_modules/@angular/cli/models/webpack-configs\" \"ng build --base-href=./\" \"cpx ./src/entry.js ./dist/\"",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -28,6 +28,8 @@
     "clarity-icons": "^0.9.0",
     "clarity-ui": "^0.9.0",
     "core-js": "^2.4.1",
+    "electron-dl": "^1.8.0",
+    "fs-extra": "^2.1.2",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "mutationobserver-shim": "^0.3.2",

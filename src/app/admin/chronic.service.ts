@@ -93,4 +93,18 @@ export class ChronicService {
     });
   }
 
+  hdcNotRegister(hospcode: string) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.url}/chronic/not-register`, {
+        hospcode: hospcode
+      })
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
 }

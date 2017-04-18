@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+
+const { ipcRenderer } = require('electron');
 
 import { LoginService } from '../login.service';
 import { AlertService } from '../../alert.service';
@@ -72,16 +74,26 @@ export class LoginPageComponent implements OnInit {
       });
   }
 
+  cancelLogin() {
+    this.isLogging = false;
+  };
+
   saveConfig() {
     const port = this.dbPort || 3306;
 
-    localStorage.setItem('dbHost', this.dbHost);
+    localStorage.setItem('dbHost', this.dbHost.toString());
     localStorage.setItem('dbPort', port.toString());
     localStorage.setItem('dbName', this.dbName);
     localStorage.setItem('dbUser', this.dbUser);
     localStorage.setItem('dbPassword', this.dbPassword);
     localStorage.setItem('apiUrl', this.apiUrl);
 
-    this.alert.success('บันทึกการเชื่อมต่อเสร็จเรียบร้อยแล้ว');
+    this.alert.confirmExit('บันทึกข้อมูลเสร็จเรียบร้อยแล้ว ปิดโปรแกรมแล้วเปิดใหม่ หรือไม่?')
+      .then(() => {
+        ipcRenderer.send('close-app');
+      })
+      .catch(() => {
+        // cancel
+      });
   }
 }

@@ -3,14 +3,14 @@
       <div class="branding">
         <a class="nav-link">
           <clr-icon shape="shield"></clr-icon>
-          <span class="title">MKHO@HDC</span>
+          <span class="title">iProfile</span>
         </a>
       </div>
     </clr-header>
     <div class="login-wrapper">
       <form class="login">
         <label class="title">
-          MKHO@HDC&#174;
+          iProfile@MKHO&#174;
         </label>
         <p></p>
         <clr-tabs>
@@ -26,7 +26,7 @@
                     Loading...
                   </span>
                   <span>
-                    Logging in...
+                    Logging in... <a href="javascript://" (click)="cancelLogin()">Cancel</a>
                   </span>
                 </div>
                 <button type="button" (click)="doLogin()" class="btn btn-primary" [disabled]="!username || !password || isLogging">LOG IN</button>
@@ -36,27 +36,27 @@
               <section class="form-block">
                 <label>กำหนดค่าการเชื่อมต่อ</label>
                 <div class="form-group">
-                  <label for="aForm_1">Host</label>
+                  <label for="dbHost">Host</label>
                   <input type="text" name="dbHost" [(ngModel)]="dbHost">
                 </div>
                 <div class="form-group">
-                  <label for="aForm_1">Port</label>
-                  <input type="number" name="dbHost" [(ngModel)]="dbPort">
+                  <label for="dbPort">Port</label>
+                  <input type="number" name="dbPort" [(ngModel)]="dbPort">
                 </div>
                 <div class="form-group">
-                  <label for="aForm_2">Database</label>
+                  <label for="dbName">Database</label>
                   <input type="text" name="dbName" [(ngModel)]="dbName">
                 </div>
                 <div class="form-group">
-                  <label for="aForm_2">User</label>
+                  <label for="dbUser">User</label>
                   <input type="text" name="dbUser" [(ngModel)]="dbUser">
                 </div>
                 <div class="form-group">
-                  <label for="aForm_2">Password</label>
+                  <label for="dbPassword">Password</label>
                   <input type="password" name="dbPassword" [(ngModel)]="dbPassword">
                 </div>
                 <div class="form-group">
-                  <label for="aForm_2">API Url</label>
+                  <label for="apiUrl">API Url</label>
                   <input type="text" name="apiUrl" [(ngModel)]="apiUrl">
                 </div>
                 <button type="button" class="btn btn-primary btn-sm" (click)="saveConfig()"
