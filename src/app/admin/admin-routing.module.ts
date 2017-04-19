@@ -10,7 +10,8 @@ import { VaccinePageComponent } from './vaccine-page/vaccine-page.component';
 import { ChronicPageComponent } from './chronic-page/chronic-page.component';
 import { ChronicMissingComponent } from './chronic-missing/chronic-missing.component';
 import { PersonDuplicatedComponent } from './person-duplicated/person-duplicated.component';
-
+import { DrugAllergyComponent } from './drug-allergy/drug-allergy.component';
+import { DeathComponent } from './death/death.component';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 const routes: Routes = [
@@ -26,6 +27,8 @@ const routes: Routes = [
       { path: 'chronic', component: ChronicPageComponent },
       { path: 'chronic-missing', component: ChronicMissingComponent },
       { path: 'person-duplicated', component: PersonDuplicatedComponent },
+      { path: 'drugallergy', component: DrugAllergyComponent },
+      { path: 'death', component: DeathComponent },
       { path: '**', component: PageNotFoundComponent },
     ]
   }

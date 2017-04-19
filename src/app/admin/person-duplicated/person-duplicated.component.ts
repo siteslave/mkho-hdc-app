@@ -13,10 +13,14 @@ const fse = require('fs-extra');
 })
 export class PersonDuplicatedComponent implements OnInit {
   persons: any[] = [];
+  personDuplicateds: any[] = [];
   loading = false;
   loadingExport = false;
+  loadingDuplicated = false;
+
   hospcode: string;
   token: string;
+  openDuplicated = false;
 
   constructor(
     private alertService: AlertService,
@@ -49,6 +53,30 @@ export class PersonDuplicatedComponent implements OnInit {
         this.loading = false;
         this.alertService.serverError();
       });
+  }
+
+  getDuplicated(cid) {
+    this.loadingDuplicated = true;
+    const that = this;
+    this.personDuplicateds = [];
+    this.openDuplicated = true;
+
+    setTimeout(() => {
+      that.personService.hdcGetDuplicatedList(cid)
+      .then((result: any) => {
+        if (result.ok) {
+          that.personDuplicateds = result.rows;
+        } else {
+          that.alertService.error(JSON.stringify(result.message));
+        }
+        that.ref.detectChanges();
+        that.loadingDuplicated = false;
+      })
+      .catch(() => {
+        that.loadingDuplicated = false;
+        that.alertService.serverError();
+      });
+    }, 1000);
   }
 
   exportExcel() {

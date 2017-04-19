@@ -22,4 +22,18 @@ export class PersonService {
     });
   }
 
+  hdcGetDuplicatedList(cid: string) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.url}/person/duplicated/list`, {
+        cid: cid
+      })
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
 }

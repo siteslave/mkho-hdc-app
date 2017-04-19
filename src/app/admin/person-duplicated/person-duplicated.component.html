@@ -24,7 +24,7 @@
     <clr-dg-cell>{{person.sex | toSexName}}</clr-dg-cell>
     <clr-dg-cell>{{person.TYPEAREA}}</clr-dg-cell>
     <clr-dg-cell>
-      <a href="javascript://" class="label label-blue clickable">
+      <a href="javascript://" class="label label-blue clickable" (click)="getDuplicated(person.CID)">
         ดูข้อมูลซ้ำ
         <span class="badge">{{ person.total | number}}</span>
       </a>
@@ -36,3 +36,41 @@
     <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="openDuplicated" [clrModalClosable]="false" [clrModalSize]="'xl'">
+  <h3 class="modal-title">รายชื่อกลุ่มเป้าหมายที่ Typearea ซ้ำกับหน่วยบริการอื่น</h3>
+  <div class="modal-body">
+    <clr-datagrid [clrDgLoading]="loadingDuplicated">
+      <clr-dg-column>HN</clr-dg-column>
+      <clr-dg-column>PID</clr-dg-column>
+      <clr-dg-column>ชื่อ-สกุล</clr-dg-column>
+      <clr-dg-column>วันเกิด</clr-dg-column>
+      <clr-dg-column>อายุ</clr-dg-column>
+      <clr-dg-column>หน่วยบริการ</clr-dg-column>
+      <clr-dg-column>ปรับปรุ่งล่าสุด</clr-dg-column>
+
+      <clr-dg-placeholder>ไม่พบประวัติการฝากครรภ์</clr-dg-placeholder>
+
+      <clr-dg-row *clrDgItems="let p of personDuplicateds">
+        <clr-dg-cell>{{ p.hn }}</clr-dg-cell>
+        <clr-dg-cell>{{ p.pid }}</clr-dg-cell>
+        <clr-dg-cell>{{ p.ptname }}</clr-dg-cell>
+        <clr-dg-cell>{{ p.birth | toThaiDate }}</clr-dg-cell>
+        <clr-dg-cell>{{ p.age | number }}</clr-dg-cell>
+        <clr-dg-cell>{{ p.hospcode }} - {{ p.hospname }}</clr-dg-cell>
+        <clr-dg-cell>{{ p.d_update }}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        {{pagination2.firstItem + 1}} - {{pagination2.lastItem + 1}} of {{pagination2.totalItems}} รายการ
+        <clr-dg-pagination #pagination2 [clrDgPageSize]="6"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openDuplicated = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>

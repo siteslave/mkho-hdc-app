@@ -27,6 +27,8 @@ import { ChronicMissingComponent } from './chronic-missing/chronic-missing.compo
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { PersonDuplicatedComponent } from './person-duplicated/person-duplicated.component';
+import { DrugAllergyComponent } from './drug-allergy/drug-allergy.component';
+import { DeathComponent } from './death/death.component';
 export function highchartsFactory() {
   return require('highcharts');
 }
@@ -56,7 +58,9 @@ Highcharts.setOptions({
     VaccinePageComponent,
     ChronicPageComponent,
     ChronicMissingComponent,
-    PersonDuplicatedComponent],
+    PersonDuplicatedComponent,
+    DrugAllergyComponent,
+    DeathComponent],
   providers: [
     MainService,
     AlertService,
