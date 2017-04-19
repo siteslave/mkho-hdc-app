@@ -19,34 +19,37 @@
       <a class=" nav-link nav-icon" routerLink='/admin/wbc' routerLinkActive='active'>
         <clr-icon shape="happy-face"></clr-icon>
       </a>
+      <a href="javascript://" class=" nav-link nav-icon" (click)="refresh()">
+        <clr-icon shape="refresh"></clr-icon>
+      </a>
+      <a href="javascript://" class=" nav-link nav-icon" (click)="openDevTools()">
+        <clr-icon shape="cog"></clr-icon>
+      </a>
     </div>
     <div class="header-actions">
-        <clr-dropdown class="dropdown bottom-right">
-            <button class="nav-text" clrDropdownToggle>
+      <clr-dropdown class="dropdown bottom-right">
+        <button class="nav-text" clrDropdownToggle>
                 {{ fullname }}
                 <clr-icon shape="caret down"></clr-icon>
             </button>
-            <div class="dropdown-menu">
-                <a href="javascript://" class="disabled" clrDropdownItem>{{ hospitalname }}</a>
-                <a href="javascript://" clrDropdownItem>Preferences</a>
-                <a (click)="logout()" clrDropdownItem>Log out</a>
-            </div>
-        </clr-dropdown>
+        <div class="dropdown-menu">
+          <a href="javascript://" class="disabled" clrDropdownItem>{{ hospitalname }}</a>
+          <a href="javascript://" clrDropdownItem>Preferences</a>
+          <a (click)="logout()" clrDropdownItem>Log out</a>
+        </div>
+      </clr-dropdown>
     </div>
   </clr-header>
   <nav class="subnav" [clr-nav-level]="2">
     <ul class="nav">
       <li class="nav-item">
-        <a class="nav-link" href="javascript://" 
-        routerLink='/admin/anc' routerLinkActive='active'>ทะเบียนหญิงตั้งครรภ์</a>
+        <a class="nav-link" href="javascript://" routerLink='/admin/anc' routerLinkActive='active'>ทะเบียนหญิงตั้งครรภ์</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="javascript://" 
-        routerLink='/admin/chronic' routerLinkActive='active'>ทะเบียนเบาหวาน/ความดัน</a>
+        <a class="nav-link" href="javascript://" routerLink='/admin/chronic' routerLinkActive='active'>ทะเบียนเบาหวาน/ความดัน</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="javascript://" 
-        routerLink='/admin/vaccine' routerLinkActive='active'>ข้อมูลวัคซีน</a>
+        <a class="nav-link" href="javascript://" routerLink='/admin/vaccine' routerLinkActive='active'>ข้อมูลวัคซีน</a>
       </li>
     </ul>
   </nav>
@@ -56,16 +59,41 @@
       <router-outlet></router-outlet>
     </div>
 
-    <nav class="sidenav" [clr-nav-level]="1">
+    <nav class="sidenav" [clr-nav-level]="1" style="overflow-x: auto;">
       <section class="sidenav-content">
         <clr-tree-node [clrTreeNodeExpanded]="true">
-          เมนูหลัก
+          ข้อมูลพื้นฐาน
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/person-duplicated' routerLinkActive='active'>
+              <clr-icon shape="group"></clr-icon>
+              Typearea ซ้ำซ้อน
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/anc' routerLinkActive='active'>
+              <clr-icon shape="user"></clr-icon>
+              ข้อมูลผู้เสียชีวิต
+            </button>
+          </clr-tree-node>
+        </clr-tree-node>
+        <clr-tree-node [clrTreeNodeExpanded]="true">
+          ข้อมูลหญิงตั้งครรภ์
           <clr-tree-node>
             <button class="clr-treenode-link" routerLink='/admin/anc' routerLinkActive='active'>
               <clr-icon shape="user"></clr-icon>
               ทะเบียนหญิงตั้งครรภ์
             </button>
           </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/anc' routerLinkActive='active'>
+              <clr-icon shape="user"></clr-icon>
+              กลุ่มเป้าหมายตัวชี้วัด
+            </button>
+          </clr-tree-node>
+        </clr-tree-node>
+
+        <clr-tree-node [clrTreeNodeExpanded]="true">
+          ข้อมูลเด็กแรกเกิด/วัคซีน
           <clr-tree-node>
             <button class="clr-treenode-link" routerLink='/admin/wbc' routerLinkActive='active'>
               <clr-icon shape="happy-face"></clr-icon>
@@ -80,8 +108,48 @@
           </clr-tree-node>
         </clr-tree-node>
 
+        <clr-tree-node [clrTreeNodeExpanded]="false">
+          ความครอบคลุมวัคซีน
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/wbc' routerLinkActive='active'>
+              <clr-icon shape="happy-face"></clr-icon>
+              วัคซีนเด็กอายุ 1 ปี
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/vaccine' routerLinkActive='active'>
+              <clr-icon shape="group"></clr-icon>
+              วัคซีนเด็กอายุ 2 ปี
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/vaccine' routerLinkActive='active'>
+              <clr-icon shape="group"></clr-icon>
+              วัคซีนเด็กอายุ 3 ปี
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/vaccine' routerLinkActive='active'>
+              <clr-icon shape="group"></clr-icon>
+              วัคซีนเด็กอายุ 5 ปี
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/vaccine' routerLinkActive='active'>
+              <clr-icon shape="group"></clr-icon>
+              วัคซีนเด็ก ป.1
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/vaccine' routerLinkActive='active'>
+              <clr-icon shape="group"></clr-icon>
+              วัคซีนเด็ก ป.6
+            </button>
+          </clr-tree-node>
+        </clr-tree-node>
+
         <clr-tree-node [clrTreeNodeExpanded]="true">
-          ข้อมูลโรคเรื้อรัง
+          โรคเรื้อรัง (NCD)
           <clr-tree-node>
             <button class="clr-treenode-link" routerLink='/admin/chronic' routerLinkActive='active'>
               <clr-icon shape="tools"></clr-icon>
@@ -92,6 +160,18 @@
             <button class="clr-treenode-link" routerLink='/admin/chronic-missing' routerLinkActive='active'>
               <clr-icon shape="library"></clr-icon>
               ผู้ป่วยรอลงทะเบียน
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/chronic-missing' routerLinkActive='active'>
+              <clr-icon shape="library"></clr-icon>
+              คัดกรองความดันเกิน 140/90
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button class="clr-treenode-link" routerLink='/admin/chronic-missing' routerLinkActive='active'>
+              <clr-icon shape="library"></clr-icon>
+              คัดกรองน้ำตาลเกิน 100
             </button>
           </clr-tree-node>
         </clr-tree-node>

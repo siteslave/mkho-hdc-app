@@ -1,0 +1,38 @@
+<h3>รายชื่อกลุ่มเป้าหมายที่มี Typearea ซ้ำกับหน่วยบริการอื่น</h3>
+
+<button class="btn btn-sm btn-success" (click)="exportExcel()" [disabled]="!persons.length || loadingExport">Excel Export</button>
+<span *ngIf="loadingExport" class="spinner spinner-inline">กรุณารอซักครู่...</span>
+<span *ngIf="loadingExport">กรุณารอซักครู่...</span>
+<clr-datagrid [clrDgLoading]="loading">
+  <clr-dg-column [clrDgField]="'CID'">CID</clr-dg-column>
+  <!--<clr-dg-column [clrDgField]="'PID'">PID</clr-dg-column>-->
+  <clr-dg-column [clrDgField]="'HN'">HN</clr-dg-column>
+  <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
+  <clr-dg-column>อายุ (ปี)</clr-dg-column>
+  <clr-dg-column>เพศ</clr-dg-column>
+  <clr-dg-column>Typearea</clr-dg-column>
+  <clr-dg-column></clr-dg-column>
+
+  <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+  <clr-dg-row *clrDgItems="let person of persons">
+    <clr-dg-cell>{{person.CID}}</clr-dg-cell>
+    <!--<clr-dg-cell>{{person.PID}}</clr-dg-cell>-->
+    <clr-dg-cell>{{person.HN}}</clr-dg-cell>
+    <clr-dg-cell>{{person.ptname}}</clr-dg-cell>
+    <clr-dg-cell>{{person.age}}</clr-dg-cell>
+    <clr-dg-cell>{{person.sex | toSexName}}</clr-dg-cell>
+    <clr-dg-cell>{{person.TYPEAREA}}</clr-dg-cell>
+    <clr-dg-cell>
+      <a href="javascript://" class="label label-blue clickable">
+        ดูข้อมูลซ้ำ
+        <span class="badge">{{ person.total | number}}</span>
+      </a>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+    <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>

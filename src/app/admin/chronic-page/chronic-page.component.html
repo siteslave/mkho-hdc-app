@@ -72,27 +72,40 @@
 <clr-modal [(clrModalOpen)]="openModalChronicFu" [clrModalClosable]="false" [clrModalSize]="'xl'">
   <h3 class="modal-title">ประวัติผลตรวจทั่วไป</h3>
   <div class="modal-body">
-    <clr-datagrid [clrDgLoading]="loadingHistory">
-      <clr-dg-column [clrDgField]="'DATE_SERV'">วันที่</clr-dg-column>
-      <clr-dg-column>ความดัน</clr-dg-column>
-      <clr-dg-column>ผลตรวจตา</clr-dg-column>
-      <clr-dg-column>ผลตรวจเท้า</clr-dg-column>
-      <clr-dg-column [clrDgField]="'HOSPCODE'">หน่วยบริการ</clr-dg-column>
-      <clr-dg-placeholder>ไม่พบประวัติ</clr-dg-placeholder>
+    <clr-tabs>
+      <clr-tab-link [clrTabLinkId]="'link1'" [clrTabLinkActive]="true">ประวัติรับบริการ</clr-tab-link>
+      <clr-tab-link>กราฟแสดงสถิติต่างๆ</clr-tab-link>
 
-      <clr-dg-row *clrDgItems="let chronic of chronicFuHistories;">
-        <clr-dg-cell>{{ chronic.DATE_SERV | toThaiDate }}</clr-dg-cell>
-        <clr-dg-cell>{{ chronic.SBP }}/{{chronic.DBP}}</clr-dg-cell>
-        <clr-dg-cell>{{ chronic.retina_name }}</clr-dg-cell>
-        <clr-dg-cell>{{ chronic.foot_name }}</clr-dg-cell>
-        <clr-dg-cell>{{ chronic.HOSPCODE }} - {{ chronic.hospname }} (Type: {{ chronic.TYPEAREA }})</clr-dg-cell>
-      </clr-dg-row>
+      <clr-tab-content [clrTabContentId]="'content1'" [clrTabContentActive]="true">
+        <clr-datagrid [clrDgLoading]="loadingHistory">
+          <clr-dg-column [clrDgField]="'DATE_SERV'">วันที่</clr-dg-column>
+          <clr-dg-column>ความดัน</clr-dg-column>
+          <clr-dg-column>ผลตรวจตา</clr-dg-column>
+          <clr-dg-column>ผลตรวจเท้า</clr-dg-column>
+          <clr-dg-column [clrDgField]="'HOSPCODE'">หน่วยบริการ</clr-dg-column>
+          <clr-dg-placeholder>ไม่พบประวัติ</clr-dg-placeholder>
 
-      <clr-dg-footer>
-        {{pagination2.firstItem + 1}} - {{pagination2.lastItem + 1}} of {{pagination2.totalItems}} รายการ
-        <clr-dg-pagination #pagination2 [clrDgPageSize]="6"></clr-dg-pagination>
-      </clr-dg-footer>
-    </clr-datagrid>
+          <clr-dg-row *clrDgItems="let chronic of chronicFuHistories;">
+            <clr-dg-cell>{{ chronic.DATE_SERV | toThaiDate }}</clr-dg-cell>
+            <clr-dg-cell>{{ chronic.SBP }}/{{chronic.DBP}}</clr-dg-cell>
+            <clr-dg-cell>{{ chronic.retina_name }}</clr-dg-cell>
+            <clr-dg-cell>{{ chronic.foot_name }}</clr-dg-cell>
+            <clr-dg-cell>{{ chronic.HOSPCODE }} - {{ chronic.hospname }} (Type: {{ chronic.TYPEAREA }})</clr-dg-cell>
+          </clr-dg-row>
+
+          <clr-dg-footer>
+            {{pagination2.firstItem + 1}} - {{pagination2.lastItem + 1}} of {{pagination2.totalItems}} รายการ
+            <clr-dg-pagination #pagination2 [clrDgPageSize]="6"></clr-dg-pagination>
+          </clr-dg-footer>
+        </clr-datagrid>
+      </clr-tab-content>
+      <clr-tab-content>
+       <div class="row">
+         <div class="col-md-6"> <chart [options]="optionsBp"></chart> </div>
+         <div class="col-md-6"> <chart [options]="optionsWeight"></chart> </div>
+       </div>
+      </clr-tab-content>
+    </clr-tabs>
 
   </div>
   <div class="modal-footer">

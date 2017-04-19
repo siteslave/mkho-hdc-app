@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+const { ipcRenderer } = require('electron');
 
 import { IConnection } from 'mysql';
 
@@ -41,6 +42,14 @@ export class LayoutComponent implements OnInit {
     sessionStorage.removeItem('fullname');
 
     this.router.navigate(['login']);
+  }
+
+  refresh() {
+    location.reload();
+  }
+
+  openDevTools() {
+    ipcRenderer.send('open-devtools');
   }
 
   ngOnInit() {
