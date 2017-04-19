@@ -18,7 +18,11 @@ export class ChronicService {
         from clinicmember as cm
         inner join person as p on p.patient_hn=cm.hn
         left join clinic as c on c.clinic=cm.clinic
-        where p.house_regist_type_id in (select house_regist_type_id from house_regist_type where house_regist_type.export_code in ('1', '3'))
+        where p.house_regist_type_id in (
+          select house_regist_type_id 
+          from house_regist_type 
+          where house_regist_type.export_code in ('1', '3')
+        )
         and cm.discharge='N' and p.death !='Y' and cm.clinic in ('001', '002')
         group by cm.hn
         order by p.fname, p.lname

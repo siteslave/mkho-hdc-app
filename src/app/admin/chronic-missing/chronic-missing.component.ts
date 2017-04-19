@@ -2,8 +2,6 @@ import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { ChronicService } from '../chronic.service';
 import { AlertService } from '../../alert.service';
 const { ipcRenderer } = require('electron');
-
-// const request = require('request');
 const fse = require('fs-extra');
 
 import { IConnection } from 'mysql';
@@ -15,7 +13,6 @@ import { Configure } from '../../configure';
   styleUrls: ['./chronic-missing.component.css']
 })
 export class ChronicMissingComponent implements OnInit {
-
 
   configure: Configure = new Configure();
   connection: IConnection;
