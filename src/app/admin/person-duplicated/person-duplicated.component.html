@@ -47,6 +47,7 @@
       <clr-dg-column>วันเกิด</clr-dg-column>
       <clr-dg-column>อายุ</clr-dg-column>
       <clr-dg-column>หน่วยบริการ</clr-dg-column>
+      <clr-dg-column>Typearea</clr-dg-column>
       <clr-dg-column>ปรับปรุ่งล่าสุด</clr-dg-column>
 
       <clr-dg-placeholder>ไม่พบประวัติการฝากครรภ์</clr-dg-placeholder>
@@ -58,6 +59,7 @@
         <clr-dg-cell>{{ p.birth | toThaiDate }}</clr-dg-cell>
         <clr-dg-cell>{{ p.age | number }}</clr-dg-cell>
         <clr-dg-cell>{{ p.hospcode }} - {{ p.hospname }}</clr-dg-cell>
+        <clr-dg-cell>{{ p.typearea }}</clr-dg-cell>
         <clr-dg-cell>{{ p.d_update }}</clr-dg-cell>
       </clr-dg-row>
 
