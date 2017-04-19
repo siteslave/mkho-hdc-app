@@ -14,6 +14,7 @@ import { AncService } from './anc.service';
 import { WbcService } from './wbc.service';
 import { VaccineService } from './vaccine.service';
 import { ChronicService } from './chronic.service';
+import { PersonService } from './person.service';
 
 import { LayoutComponent } from './layout/layout.component';
 import { AncPageComponent } from './anc-page/anc-page.component';
@@ -22,6 +23,21 @@ import { VaccinePageComponent } from './vaccine-page/vaccine-page.component';
 import { ChronicPageComponent } from './chronic-page/chronic-page.component';
 import { ChronicMissingComponent } from './chronic-missing/chronic-missing.component';
 
+
+import { ChartModule } from 'angular2-highcharts';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import { PersonDuplicatedComponent } from './person-duplicated/person-duplicated.component';
+export function highchartsFactory() {
+  return require('highcharts');
+}
+
+const Highcharts = require('highcharts');
+ 
+Highcharts.setOptions({
+  credits: false
+});
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -29,7 +45,8 @@ import { ChronicMissingComponent } from './chronic-missing/chronic-missing.compo
     HelperModule,
     FormsModule,
     ClarityModule,
-    AuthModule
+    AuthModule,
+    ChartModule
   ],
   declarations: [
     MainPageComponent,
@@ -38,14 +55,17 @@ import { ChronicMissingComponent } from './chronic-missing/chronic-missing.compo
     WbcPageComponent,
     VaccinePageComponent,
     ChronicPageComponent,
-    ChronicMissingComponent],
+    ChronicMissingComponent,
+    PersonDuplicatedComponent],
   providers: [
     MainService,
     AlertService,
     AncService,
     WbcService,
     VaccineService,
-    ChronicService
+    ChronicService,
+    PersonService,
+    { provide: HighchartsStatic, useFactory: highchartsFactory }
   ]
 })
 export class AdminModule { }

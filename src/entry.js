@@ -11,6 +11,11 @@ ipcMain.on('close-app', (event, arg) => {
   app.quit();
 });
 
+ipcMain.on('open-devtools', (event, arg) => {
+  event.returnValue = null
+  win.webContents.openDevTools();
+});
+
 ipcMain.on('download-file', (event, args) => {
   const options = {
     saveAs: true,
@@ -39,8 +44,7 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }))
-
-  // win.webContents.openDevTools()
+  
   win.maximize();
 
   win.on('closed', () => {
