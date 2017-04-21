@@ -5,3 +5,7 @@
 chart {
     display: block;
 }
+
+.clr-treenode-children {
+    margin-left: 5px;
+}

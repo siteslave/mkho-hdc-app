@@ -1,3 +1,94 @@
-<p>
-  death works!
-</p>
+<h3>กลุ่มเป้าหมายเสียชีวิต แต่ยังไม่ได้ลงทะเบียนหรือเปลี่ยนสถานะ <span class="badge badge-danger">{{ persons.length | number}}</span></h3>
+
+<button class="btn btn-sm btn-success" (click)="exportExcel()" [disabled]="!persons.length || loadingExport">Excel Export</button>
+<span *ngIf="loadingExport" class="spinner spinner-inline">กรุณารอซักครู่...</span>
+<span *ngIf="loadingExport">กรุณารอซักครู่...</span>
+<clr-datagrid [clrDgLoading]="loading">
+  <clr-dg-column [clrDgField]="'CID'">CID</clr-dg-column>
+  <!--<clr-dg-column [clrDgField]="'PID'">PID</clr-dg-column>-->
+  <clr-dg-column [clrDgField]="'hn'">HN</clr-dg-column>
+  <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
+  <clr-dg-column>อายุ (ปี)</clr-dg-column>
+  <clr-dg-column>เพศ</clr-dg-column>
+  <clr-dg-column>Typearea</clr-dg-column>
+  <clr-dg-column [clrDgField]="'discharge'">สถานะ</clr-dg-column>
+  <clr-dg-column></clr-dg-column>
+
+  <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+  <clr-dg-row *clrDgItems="let person of persons">
+    <clr-dg-cell>{{person.cid}}</clr-dg-cell>
+    <!--<clr-dg-cell>{{person.PID}}</clr-dg-cell>-->
+    <clr-dg-cell>{{person.hn}}</clr-dg-cell>
+    <clr-dg-cell>{{person.ptname}}</clr-dg-cell>
+    <clr-dg-cell>{{person.age}}</clr-dg-cell>
+    <clr-dg-cell>{{person.sex | toSexName}}</clr-dg-cell>
+    <clr-dg-cell>{{person.typearea}}</clr-dg-cell>
+    <clr-dg-cell>{{person.discharge}} - {{person.dischargedesc}}</clr-dg-cell>
+    <clr-dg-cell>
+      <a href="javascript://" class="label label-success clickable" (click)="getDeathInfo(person) ">
+        ดูข้อมูล
+      </a>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+    <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="openDeathInfo" [clrModalClosable]="false" [clrModalSize]="'lg'">
+  <h3 class="modal-title">ข้อมูลการเสียชีวิต</h3>
+  <div class="modal-body">
+    <div *ngIf="loadingInfo">
+      <span class="spinner spinner-inline">กรุณารอซักครู่...</span>
+      <span>กรุณารอซักครู่...</span>
+    </div>
+    <clr-stack-view *ngIf="!loadingInfo">
+      <clr-stack-block [clrSbExpanded]="true">
+        <clr-stack-label>เลขบัตรประชาชน <strong>{{ cid }}</strong></clr-stack-label>
+        <clr-stack-content>ชื่อ-สกุล <strong>{{ ptname }}</strong></clr-stack-content>
+        <clr-stack-block>
+          <clr-stack-label>วันที่เสียชีวิต</clr-stack-label>
+          <clr-stack-content>{{ deathDate | toThaiDate }}</clr-stack-content>
+        </clr-stack-block>
+        <clr-stack-block>
+          <clr-stack-label>สาเหตุการเสียชีวิต</clr-stack-label>
+          <clr-stack-content>{{ cdeath }}</clr-stack-content>
+        </clr-stack-block>
+        <clr-stack-block>
+          <clr-stack-label>สถานที่</clr-stack-label>
+          <clr-stack-content>{{ placeDeath }}</clr-stack-content>
+        </clr-stack-block>
+        <clr-stack-block>
+          <clr-stack-label>โรงพยาบาลที่เสียชีวิต</clr-stack-label>
+          <clr-stack-content>{{ hospDeath }}</clr-stack-content>
+        </clr-stack-block>
+      </clr-stack-block>
+
+      <clr-stack-block [clrSbExpanded]="true">
+        <clr-stack-label>รายละเอียดเพิ่มเติม</clr-stack-label>
+        <clr-stack-content>&nbsp;</clr-stack-content>
+        <clr-stack-block>
+          <clr-stack-label>หน่วยบริการที่บันทึก</clr-stack-label>
+          <clr-stack-content>{{ inputHospname }}</clr-stack-content>
+        </clr-stack-block>
+        <clr-stack-block>
+          <clr-stack-label>วันที่ปรับปรุงข้อมูล</clr-stack-label>
+          <clr-stack-content>{{ dUpdate | toThaiDate }}</clr-stack-content>
+        </clr-stack-block>
+        <clr-stack-block>
+          <clr-stack-label>TYPEAREA</clr-stack-label>
+          <clr-stack-content>{{ typearea }}</clr-stack-content>
+        </clr-stack-block>
+      </clr-stack-block>
+
+    </clr-stack-view>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openDeathInfo = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>

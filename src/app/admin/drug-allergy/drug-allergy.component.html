@@ -1,3 +1,81 @@
-<p>
-  drug-allergy works!
-</p>
+<h3>
+  <clr-icon shape="search" class="is-info" size="24"></clr-icon> &nbsp;ค้นหาข้อมูลแพ้ยา</h3>
+<div class="card">
+  <div class="form-group" style="margin-left: 10px;">
+    <label for="cid">ค้นหา</label>
+    <input type="text" id="cid" name="cid" (keypress)="enterSearch($event)" [(ngModel)]="cid" placeholder="ระบุเลขบัตรประชาชน">
+    <button class="btn btn-sm btn-success" (click)="search()" [disabled]="loading">ค้นหา</button>
+    <small>หมายเหตุ: ค้นจากฐาน HDC ของจังหวัด</small>
+  </div>
+</div>
+
+<clr-datagrid [clrDgLoading]="loading">
+  <clr-dg-column [clrDgField]="'cid'">CID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'hn'">HN</clr-dg-column>
+  <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
+  <clr-dg-column>อายุ (ปี)</clr-dg-column>
+  <clr-dg-column>เพศ</clr-dg-column>
+  <clr-dg-column>ข้อมูลจากหน่วยบริการ</clr-dg-column>
+  <clr-dg-column>Typearea</clr-dg-column>
+  <clr-dg-column></clr-dg-column>
+
+  <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+  <clr-dg-row *clrDgItems="let person of persons">
+    <clr-dg-cell>{{person.cid}}</clr-dg-cell>
+    <!--<clr-dg-cell>{{person.PID}}</clr-dg-cell>-->
+    <clr-dg-cell>{{person.hn}}</clr-dg-cell>
+    <clr-dg-cell>{{person.ptname}}</clr-dg-cell>
+    <clr-dg-cell>{{person.age}}</clr-dg-cell>
+    <clr-dg-cell>{{person.sex | toSexName}}</clr-dg-cell>
+    <clr-dg-cell>{{person.hospcode}} - {{person.hospname}}</clr-dg-cell>
+    <clr-dg-cell>{{person.typearea}}</clr-dg-cell>
+    <clr-dg-cell>
+      <a href="javascript://" class="label label-success clickable" (click)="getAllergyInfo(person) ">
+        ข้อมูลแพ้ยา
+      </a>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+    <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="openModalAllergy" [clrModalClosable]="false" [clrModalSize]="'xl'">
+  <h3 class="modal-title">ข้อมูลการแพ้ยา</h3>
+  <div class="modal-body">
+    <clr-datagrid [clrDgLoading]="loadingAllergy">
+      <clr-dg-column>ชื่อยา</clr-dg-column>
+      <clr-dg-column>ประเภทวินิจฉัย</clr-dg-column>
+      <clr-dg-column>ระดับความรุนแรง</clr-dg-column>
+      <clr-dg-column>สถานบริการที่บันทึก</clr-dg-column>
+      <clr-dg-column>วันที่บันทึก</clr-dg-column>
+      <clr-dg-column>สถานบริการที่ให้ข้อมูล</clr-dg-column>
+      <clr-dg-column>ผู้ให้ประวัติ</clr-dg-column>
+
+      <clr-dg-placeholder>ไม่พบประวัติ</clr-dg-placeholder>
+
+      <clr-dg-row *clrDgItems="let a of allergies">
+        <clr-dg-cell>{{ a.DNAME }}</clr-dg-cell>
+        <clr-dg-cell>{{ a.typedx_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ a.alevel_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ a.HOSPCODE }} - {{ a.hospname }}</clr-dg-cell>
+        <clr-dg-cell>{{ a.DATERECORD | toThaiDate }}</clr-dg-cell>
+        <clr-dg-cell>{{ a.INFORMHOSP }} - {{ a.informant_hospname }}</clr-dg-cell>
+        <clr-dg-cell>{{ a.informant_name }}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        {{pagination1.firstItem + 1}} - {{pagination1.lastItem + 1}} of {{pagination1.totalItems}} รายการ
+        <clr-dg-pagination #pagination1 [clrDgPageSize]="6"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="openModalAllergy = false">
+      ปิดหน้าต่าง
+    </button>
+  </div>
+</clr-modal>

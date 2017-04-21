@@ -2,7 +2,6 @@ import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { ChronicService } from '../chronic.service';
 import { AlertService } from '../../alert.service';
 const { ipcRenderer } = require('electron');
-const fse = require('fs-extra');
 
 import { IConnection } from 'mysql';
 import { Configure } from '../../configure';

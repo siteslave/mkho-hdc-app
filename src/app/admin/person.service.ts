@@ -36,4 +36,60 @@ export class PersonService {
     });
   }
 
+  hdcGetDeathNotRegister(hospcode: string) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.url}/person/death/not-register`, {
+        hospcode: hospcode
+      })
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
+  hdcGetDeathNotRegisterInfo(cid: string) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.url}/person/death/not-register/info`, {
+        cid: cid
+      })
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
+  hdcSearchWithCid(cid: string) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.url}/person/search-cid`, {
+        cid: cid
+      })
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
+  hdcGetDrugAllergy(cid: string) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.url}/person/drug-allergy`, {
+        cid: cid
+      })
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
 }

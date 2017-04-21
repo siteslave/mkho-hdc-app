@@ -1,4 +1,4 @@
-<h3>รายชื่อกลุ่มเป้าหมายที่มี Typearea ซ้ำกับหน่วยบริการอื่น</h3>
+<h3>รายชื่อกลุ่มเป้าหมายที่มี Typearea ซ้ำกับหน่วยบริการอื่น <span class="badge badge-danger">{{ persons.length | number}}</span></h3>
 
 <button class="btn btn-sm btn-success" (click)="exportExcel()" [disabled]="!persons.length || loadingExport">Excel Export</button>
 <span *ngIf="loadingExport" class="spinner spinner-inline">กรุณารอซักครู่...</span>

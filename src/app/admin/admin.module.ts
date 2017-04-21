@@ -29,6 +29,7 @@ import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { PersonDuplicatedComponent } from './person-duplicated/person-duplicated.component';
 import { DrugAllergyComponent } from './drug-allergy/drug-allergy.component';
 import { DeathComponent } from './death/death.component';
+import { AncTargetComponent } from './anc-target/anc-target.component';
 export function highchartsFactory() {
   return require('highcharts');
 }
@@ -60,7 +61,8 @@ Highcharts.setOptions({
     ChronicMissingComponent,
     PersonDuplicatedComponent,
     DrugAllergyComponent,
-    DeathComponent],
+    DeathComponent,
+    AncTargetComponent],
   providers: [
     MainService,
     AlertService,

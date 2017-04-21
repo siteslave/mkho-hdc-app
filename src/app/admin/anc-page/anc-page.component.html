@@ -41,7 +41,7 @@
 </clr-datagrid>
 
 <clr-modal [(clrModalOpen)]="openModalAnc" [clrModalClosable]="false" [clrModalSize]="'xl'">
-  <h3 class="modal-title">ประวัติฝากครรภ์ (Local)</h3>
+  <h3 class="modal-title">ประวัติฝากครรภ์</h3>
   <div class="modal-body">
     <clr-tabs (clrTabsCurrentTabLinkChanged)="onTabAncSelected($event)">
       <clr-tab-link [clrTabLinkId]="'local'" [clrTabLinkActive]="true">ฝากครรภ์ที่นี่</clr-tab-link>
@@ -93,6 +93,7 @@
         <clr-dg-column>อายุครรภ์(สัปดาห์)</clr-dg-column>
         <clr-dg-column [clrDgField]="'ANCPLACE'">หน่วยบริการ</clr-dg-column>
         <clr-dg-column [clrDgField]="'HOSPCODE'">หน่วยบันทึก</clr-dg-column>
+        <clr-dg-column>อัปเดท</clr-dg-column>
         <clr-dg-placeholder>ไม่พบประวัติการฝากครรภ์</clr-dg-placeholder>
 
         <clr-dg-row *clrDgItems="let anc of ancHistories; let idx = index;">
@@ -102,6 +103,7 @@
           <clr-dg-cell>{{anc.GA}}</clr-dg-cell>
           <clr-dg-cell>{{anc.ANCPLACE}} {{ anc.service_hospname }}</clr-dg-cell>
           <clr-dg-cell>{{anc.HOSPCODE}} {{ anc.owner_hospname }} (Type: {{ anc.TYPEAREA }})</clr-dg-cell>
+          <clr-dg-cell>{{anc.D_UPDATE | toThaiDate }}</clr-dg-cell>
         </clr-dg-row>
 
         <clr-dg-footer>{{ancHistories.length}} รายการ</clr-dg-footer>
@@ -117,7 +119,7 @@
 </clr-modal>
 
 <clr-modal [(clrModalOpen)]="openModalPost" [clrModalClosable]="false" [clrModalSize]="'lg'">
-  <h3 class="modal-title">ประวัติดดูแลหลังคลอด (Local)</h3>
+  <h3 class="modal-title">ประวัติดดูแลหลังคลอด</h3>
   <div class="modal-body">
     <clr-tabs (clrTabsCurrentTabLinkChanged)="onTabPostSelected($event)">
       <clr-tab-link [clrTabLinkId]="'local'" [clrTabLinkActive]="true">ดูแลหลังคลอด</clr-tab-link>
@@ -156,16 +158,19 @@
         <clr-dg-column>#</clr-dg-column>
         <clr-dg-column [clrDgField]="'PPCARE'">วันที่</clr-dg-column>
         <clr-dg-column [clrDgField]="'PPPLACE'">หน่วยบริการ</clr-dg-column>
+        <clr-dg-column>ผลการเยี่ยม</clr-dg-column>
+        <clr-dg-column>อัปเดท</clr-dg-column>
         <clr-dg-placeholder>ไม่พบประวัติการฝากครรภ์</clr-dg-placeholder>
 
         <clr-dg-row *clrDgItems="let post of postHistories; let idx = index;">
           <clr-dg-cell>{{ idx + 1 }}</clr-dg-cell>
-          <clr-dg-cell>{{post.ANCNO}}</clr-dg-cell>
           <clr-dg-cell>{{post.PPCARE | toThaiDate}}</clr-dg-cell>
           <clr-dg-cell>{{post.PPPLACE}} {{ post.hospname }} (Type: {{ post.TYPEAREA }})</clr-dg-cell>
+          <clr-dg-cell>{{post.ppresult_name}}</clr-dg-cell>
+          <clr-dg-cell>{{post.D_UPDATE | toThaiDate }}</clr-dg-cell>
         </clr-dg-row>
 
-        <clr-dg-footer>{{ancHistories.length}} รายการ</clr-dg-footer>
+        <clr-dg-footer>{{postHistories.length}} รายการ</clr-dg-footer>
         </clr-datagrid>
       </clr-tab-content>
     </clr-tabs>

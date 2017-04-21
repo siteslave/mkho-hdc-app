@@ -12,6 +12,9 @@ import { ChronicMissingComponent } from './chronic-missing/chronic-missing.compo
 import { PersonDuplicatedComponent } from './person-duplicated/person-duplicated.component';
 import { DrugAllergyComponent } from './drug-allergy/drug-allergy.component';
 import { DeathComponent } from './death/death.component';
+import { AncTargetComponent } from './anc-target/anc-target.component';
+
+
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 const routes: Routes = [
@@ -22,6 +25,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'anc', pathMatch: 'full' },
       { path: 'anc', component: AncPageComponent },
+      { path: 'anc-target', component: AncTargetComponent },
       { path: 'wbc', component: WbcPageComponent },
       { path: 'vaccine', component: VaccinePageComponent },
       { path: 'chronic', component: ChronicPageComponent },
