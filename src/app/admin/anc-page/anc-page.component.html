@@ -1,6 +1,12 @@
 <h3>
   ทะเบียนฝากครรภ์</h3>
-<button class="btn btn-sm btn-success">ส่งออกกลุ่มเป้าหมาย (ตัวชี้วัด)</button>
+<button class="btn btn-sm btn-success" [disabled]="loadingExport" (click)="exportTarget()">ส่งออกกลุ่มเป้าหมาย (ตัวชี้วัด)</button>
+<span *ngIf="loadingExport" class="spinner spinner-inline">
+  กำลังส่งออก...
+</span>
+<span *ngIf="loadingExport">
+  กำลังส่งออก...
+</span>
 <span *ngIf="loading" class="spinner spinner-inline">
   กรุณารอซักครู่...
 </span>

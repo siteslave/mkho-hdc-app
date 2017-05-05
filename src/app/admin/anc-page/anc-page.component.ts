@@ -1,9 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 
 import { IConnection } from 'mysql';
 import { AncService } from '../anc.service';
 import { AlertService } from '../../alert.service';
 import { Configure } from '../../configure';
+
+const { ipcRenderer } = require('electron');
 
 @Component({
   selector: 'app-anc-page',
@@ -20,10 +22,14 @@ export class AncPageComponent implements OnInit {
   postLocals: any = {};
   postHistories: any[] = [];
 
+  token: string;
+  hospcode: string;
+
   cid: string;
   gravida: string;
 
   loading = false;
+  loadingExport = false;
   loadingHistory = false;
   openModalPost = false;
   openModalAnc = false;
@@ -31,10 +37,15 @@ export class AncPageComponent implements OnInit {
   constructor(
     private ancService: AncService,
     private alertService: AlertService,
-    private ref: ChangeDetectorRef
-  ) { }
+    private ref: ChangeDetectorRef,
+    @Inject('API_URL') private url: string
+  ) {
+
+  }
 
   ngOnInit() {
+    this.token = sessionStorage.getItem('token');
+    this.hospcode = sessionStorage.getItem('hospcode');
     this.all();
   }
 
@@ -146,4 +157,19 @@ export class AncPageComponent implements OnInit {
     }
   };
 
+  exportTarget() {
+    const downloadUrl = `${this.url}/anc/excel-export?token=${this.token}&hospcode=${this.hospcode}`;
+    const option = { url: downloadUrl };
+
+    this.loadingExport = true;
+    ipcRenderer.on('downloaded', (event, arg) => {
+      this.loadingExport = false;
+      if (arg.ok) {
+        this.alertService.success();
+      } else {
+        this.alertService.error(arg.message);
+      }
+    });
+    ipcRenderer.send('download-file', option);
+  }
 }

@@ -1,6 +1,6 @@
 {
   "name": "health-profile",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Health Data Center",
   "main": "entry.js",
   "scripts": {
@@ -14,7 +14,7 @@
   ],
   "author": "Satit Rianpit",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "electron-dl": "^1.8.0"
   }
 }

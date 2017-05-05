@@ -23,13 +23,16 @@ import { VaccinePageComponent } from './vaccine-page/vaccine-page.component';
 import { ChronicPageComponent } from './chronic-page/chronic-page.component';
 import { ChronicMissingComponent } from './chronic-missing/chronic-missing.component';
 
-
+import { MyDatePickerTHModule } from 'mydatepicker-th';
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { PersonDuplicatedComponent } from './person-duplicated/person-duplicated.component';
 import { DrugAllergyComponent } from './drug-allergy/drug-allergy.component';
 import { DeathComponent } from './death/death.component';
 import { AncTargetComponent } from './anc-target/anc-target.component';
+import { RightCheckComponent } from './right-check/right-check.component';
+import { RightService } from './right.service';
+
 export function highchartsFactory() {
   return require('highcharts');
 }
@@ -49,7 +52,8 @@ Highcharts.setOptions({
     FormsModule,
     ClarityModule,
     AuthModule,
-    ChartModule
+    ChartModule,
+    MyDatePickerTHModule
   ],
   declarations: [
     MainPageComponent,
@@ -62,7 +66,8 @@ Highcharts.setOptions({
     PersonDuplicatedComponent,
     DrugAllergyComponent,
     DeathComponent,
-    AncTargetComponent],
+    AncTargetComponent,
+    RightCheckComponent],
   providers: [
     MainService,
     AlertService,
@@ -71,6 +76,7 @@ Highcharts.setOptions({
     VaccineService,
     ChronicService,
     PersonService,
+    RightService,
     { provide: HighchartsStatic, useFactory: highchartsFactory }
   ]
 })

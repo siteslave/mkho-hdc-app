@@ -3,7 +3,7 @@
     <div class="branding">
       <a class="nav-link">
         <clr-icon shape="storage"></clr-icon>
-        <span class="title">iProfile v1.0.1</span>
+        <span class="title">iProfile v1.0.2</span>
       </a>
     </div>
     <div class="header-nav">
@@ -61,6 +61,9 @@
 
     <nav class="sidenav" [clr-nav-level]="1" style="overflow-x: auto;">
       <section class="sidenav-content">
+        <a href="javascript://" class="nav-link" routerLink="/admin/right-check">
+            <clr-icon shape="group"></clr-icon> ตรวจสอบสิทธิการรักษา
+        </a>
         <clr-tree-node [clrTreeNodeExpanded]="true">
           ข้อมูลพื้นฐาน
           <clr-tree-node>
@@ -90,12 +93,12 @@
               ทะเบียนหญิงตั้งครรภ์
             </button>
           </clr-tree-node>
-          <!--<clr-tree-node>
+          <clr-tree-node>
             <button class="clr-treenode-link" routerLink='/admin/anc-target' routerLinkActive='active'>
               <clr-icon shape="bullseye"></clr-icon>
               กลุ่มเป้าหมายตัวชี้วัด
             </button>
-          </clr-tree-node>-->
+          </clr-tree-node>
         </clr-tree-node>
 
         <clr-tree-node [clrTreeNodeExpanded]="true">
@@ -114,7 +117,7 @@
           </clr-tree-node>
         </clr-tree-node>
 
-        <!--<clr-tree-node [clrTreeNodeExpanded]="false">
+        <clr-tree-node [clrTreeNodeExpanded]="false">
           ความครอบคลุมวัคซีน
           <clr-tree-node>
             <button class="clr-treenode-link" routerLink='/admin/wbc' routerLinkActive='active'>
@@ -152,7 +155,7 @@
               วัคซีนเด็ก ป.6
             </button>
           </clr-tree-node>
-        </clr-tree-node>-->
+        </clr-tree-node>
 
         <clr-tree-node [clrTreeNodeExpanded]="true">
           โรคเรื้อรัง (NCD)

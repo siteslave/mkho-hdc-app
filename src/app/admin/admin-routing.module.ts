@@ -13,7 +13,7 @@ import { PersonDuplicatedComponent } from './person-duplicated/person-duplicated
 import { DrugAllergyComponent } from './drug-allergy/drug-allergy.component';
 import { DeathComponent } from './death/death.component';
 import { AncTargetComponent } from './anc-target/anc-target.component';
-
+import { RightCheckComponent } from './right-check/right-check.component';
 
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
@@ -23,7 +23,8 @@ const routes: Routes = [
     component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'anc', pathMatch: 'full' },
+      { path: '', redirectTo: 'main', pathMatch: 'full' },
+      { path: 'main', component: MainPageComponent },
       { path: 'anc', component: AncPageComponent },
       { path: 'anc-target', component: AncTargetComponent },
       { path: 'wbc', component: WbcPageComponent },
@@ -33,6 +34,7 @@ const routes: Routes = [
       { path: 'person-duplicated', component: PersonDuplicatedComponent },
       { path: 'drugallergy', component: DrugAllergyComponent },
       { path: 'death', component: DeathComponent },
+      { path: 'right-check', component: RightCheckComponent },
       { path: '**', component: PageNotFoundComponent },
     ]
   }

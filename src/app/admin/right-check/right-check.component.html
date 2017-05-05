@@ -1,9 +1,18 @@
 <h3>การได้รับวัคซีน (แยกตามกลุ่มอายุ)</h3>
-<div class="form-group">
-  <label for="formFields_7">อายุตั้งแต่ (ปี)</label>
-  <input type="number" id="formFields_7" name="minAge" [(ngModel)]="minAge"> ถึง
-  <input type="number" id="formFields_7" name="maxAge" [(ngModel)]="maxAge">
-  <button class="btn btn-primary btn-sm" (click)="getTarget()">แสดง</button>
+<div class="row" style="padding-top: 10px;">
+  <div class="col-md-3">
+    <label for="">ตั้งแต่</label>
+    <my-date-picker-th name="mydate" [options]="myDatePickerOptions" [(ngModel)]="startDate" required></my-date-picker-th>
+  </div>
+  <div class="col-md-3">
+    <label for="">ถึง</label>
+    <my-date-picker-th name="mydate" [options]="myDatePickerOptions" [(ngModel)]="endDate" required></my-date-picker-th>
+  </div>
+  <div class="col-md-2">
+    <div style="padding-top: 18px;">
+      <button class="btn btn-primary" (click)="getTarget()">แสดง</button>
+    </div>
+  </div>
 </div>
 <span *ngIf="loading" class="spinner spinner-inline">
   กรุณารอซักครู่...

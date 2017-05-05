@@ -38,6 +38,8 @@ const apiUrl = localStorage.getItem('apiUrl') || 'http://localhost:3001';
   providers: [
     AuthGuard,
     AlertService,
+    { provide: 'SERVICE_URL', useValue: 'http://ucws.nhso.go.th:80/ucwstokenp1/UCWSTokenP1' },
+    { provide: 'WSDL_URL', useValue: 'http://ucws.nhso.go.th:80/ucwstokenp1/UCWSTokenP1?wsdl'},
     { provide: 'API_URL', useValue: apiUrl },
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
