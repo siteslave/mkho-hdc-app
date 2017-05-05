@@ -1,4 +1,4 @@
-<h3>การได้รับวัคซีน (แยกตามกลุ่มอายุ)</h3>
+<h3>ตรวจสอบสิทธิการรักษา (สปสช)</h3>
 <div class="row" style="padding-top: 10px;">
   <div class="col-md-3">
     <label for="">ตั้งแต่</label>
@@ -10,7 +10,22 @@
   </div>
   <div class="col-md-2">
     <div style="padding-top: 18px;">
-      <button class="btn btn-primary" (click)="getTarget()">แสดง</button>
+      <button class="btn btn-primary" (click)="getServices()">แสดง</button>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div style="padding-top: 25px;">
+      <div class="btn-group btn-primary">
+        <button class="btn">
+          <clr-icon shape="search"></clr-icon> ตรวจสอบ สปสช.
+        </button>
+        <button class="btn btn-danger">
+          <clr-icon shape="download"></clr-icon> ปรับปรุง
+        </button>
+        <button class="btn btn-success" (click)="openSettingModal()">
+          <clr-icon shape="cog"></clr-icon> ตั้งค่า
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -20,29 +35,28 @@
 <span *ngIf="loading">
   กรุณารอซักครู่...
 </span>
-<clr-datagrid [clrLoading]="loading">
-  <clr-dg-column [clrDgField]="'patient_hn'">HN</clr-dg-column>
-  <clr-dg-column [clrDgField]="'ptname'">ชื่อ-สกุล</clr-dg-column>
-  <clr-dg-column>วันเกิด</clr-dg-column>
-  <clr-dg-column [clrDgField]="'age'">อายุ (ปี)</clr-dg-column>
-  <clr-dg-column>เพศ</clr-dg-column>
+
+<clr-datagrid [clrLoading]="loading" [(clrDgSelected)]="selectedPatient">
+  <clr-dg-column [style.width.%]="10">HN</clr-dg-column>
+  <clr-dg-column [style.width.%]="20">ชื่อ-สกุล</clr-dg-column>
+  <clr-dg-column [style.width.%]="10">เวลา</clr-dg-column>
+  <clr-dg-column [style.width.%]="20">สิทธิการรักษา</clr-dg-column>
+  <clr-dg-column [style.width.%]="15">เลขที่บัตร</clr-dg-column>
+  <clr-dg-column>สิทธิ สปสช.</clr-dg-column>
 
   <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
 
-  <clr-dg-row *clrDgItems="let wbc of wbcs">
-    <clr-dg-action-overflow>
-      <button class="action-item" (click)="showVaccine(wbc)">ประวัติวัคซีน</button>
-    </clr-dg-action-overflow>
-    <clr-dg-cell>{{wbc.patient_hn}}</clr-dg-cell>
-    <clr-dg-cell>{{wbc.ptname}}</clr-dg-cell>
-    <clr-dg-cell>{{wbc.birthdate | toThaiDate }}</clr-dg-cell>
-    <clr-dg-cell>{{wbc.age | number }}</clr-dg-cell>
-    <clr-dg-cell>{{wbc.sex | toSexName }}</clr-dg-cell>
+  <clr-dg-row *clrDgItems="let patient of patients" [clrDgItem]="patient">
+    <clr-dg-cell>{{patient.hn}}</clr-dg-cell>
+    <clr-dg-cell>{{patient.ptname}}</clr-dg-cell>
+    <clr-dg-cell>{{patient.vsttime}}</clr-dg-cell>
+    <clr-dg-cell>{{patient.pttype}} - {{patient.pttype_name}}</clr-dg-cell>
+    <clr-dg-cell>{{patient.pttypeno}}</clr-dg-cell>
+    <clr-dg-cell></clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>
-    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
-    <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+     {{patients.length | number}} รายการ
   </clr-dg-footer>
 </clr-datagrid>
 
@@ -76,5 +90,42 @@
     <button type="button" class="btn btn-danger" (click)="openModalVaccine = false">
       ปิดหน้าต่าง
     </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="openSetting" [clrModalSize]="'lg'" [clrModalClosable]="false">
+  <h3 class="modal-title">กำหนดค่าการตรวจสอบสิทธิ์</h3>
+  <div class="modal-body">
+
+    <form>
+      <section class="form-block">
+        <label>NHSO Authentication setting</label>
+        <div class="form-group row">
+          <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            <label class="required" for="txtCid">เลขบัตรประชาชน</label>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <input class="form-control" type="text" name="txtCid" placeholder="เลขประชาชน 13 หลัก">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            <label class="required" for="txtFile">Token file</label>
+          </div>
+          <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <input disabled class="form-control" type="text" name="txtFile" [(ngModel)]="tokenPath" placeholder="ระบุที่อยู่ของไฟล์ nhso_token.txt">
+          </div>
+          <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+            <button class="btn btn-link" (click)="openFile()">
+              <clr-icon shape="search"></clr-icon>
+            </button>
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="openSetting = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="openSetting = false">Ok</button>
   </div>
 </clr-modal>

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 require('electron-dl')();
 
 const path = require('path')
@@ -15,6 +15,14 @@ ipcMain.on('close-app', (event, arg) => {
 ipcMain.on('open-devtools', (event, arg) => {
   event.returnValue = null
   win.webContents.openDevTools();
+});
+
+ipcMain.on('open-token-path', (event, arg) => {
+  
+  event.returnValue = dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [ {name: 'Text file', extensions: ['txt']} ]
+  });
 });
 
 ipcMain.on('download-file', (event, args) => {

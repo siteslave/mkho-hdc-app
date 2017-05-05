@@ -12,7 +12,7 @@ export class RightService {
 
   all(conn: IConnection, start: any, end: any) {
     const sql = `
-      select o.vstdate, o.vsttime, o.hn, p.pname, p.fname, p.lname,
+      select o.vstdate, o.vsttime, o.hn, concat(p.pname, p.fname, " ", p.lname) as ptname,
       o.pttype, pt.name as pttype_name, o.pttypeno, vp.begin_date, vp.expire_date
       from ovst as o
       left join patient as p on p.hn=o.hn
@@ -38,20 +38,6 @@ export class RightService {
         cid: cid,
         userCid: userCid,
         smcToken: smcToken
-      })
-        .map(res => res.json())
-        .subscribe(data => {
-          resolve(data);
-        }, error => {
-          reject(error);
-        });
-    });
-  }
-
-  hdcVaccineHistory(cid: string) {
-    return new Promise((resolve, reject) => {
-      this.authHttp.post(`${this.url}/wbc/vaccine/history`, {
-        cid: cid
       })
         .map(res => res.json())
         .subscribe(data => {
